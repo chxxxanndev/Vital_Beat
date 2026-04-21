@@ -1,0 +1,8 @@
+<% if current_user %>
+  <p>Logged in as: <%= current_user.email %></p>
+  <h1>Hello, <%= current_user.email if current_user %>!</h1>
+  <%= link_to "Logout", logout_path, data: { turbo_method: :delete } %>
+<% else %>
+  <%= link_to "Sign Up", signup_path %> | 
+  <%= link_to "Login", login_path %>
+<% end %>

@@ -1,0 +1,97 @@
+<div class="split-container">
+
+  <!-- Left: brand -->
+  <div class="brand-side">
+    <div class="brand-content anim-left">
+      <i class="fa-solid fa-heart-pulse icon-pulse mb-3" style="font-size: 3.2rem; color: #7dd3fc;"></i>
+
+      <h1 class="fw-bold mb-3" style="font-size: 2.6rem; line-height: 1.2;">Health Starts<br>with a Beat.</h1>
+      <p style="opacity: 0.75; font-size: 0.95rem; max-width: 320px; line-height: 1.6; margin-bottom: 32px;">
+        Join VitalBeat and keep a professional record of your heart health journey.
+      </p>
+
+      <div class="anim-up delay-2">
+        <div class="feature-item">
+          <div class="feature-dot"><i class="fa-solid fa-check" style="font-size: 10px; color: white;"></i></div>
+          Secure Data Storage
+        </div>
+        <div class="feature-item">
+          <div class="feature-dot"><i class="fa-solid fa-check" style="font-size: 10px; color: white;"></i></div>
+          Real-time Monitoring
+        </div>
+        <div class="feature-item">
+          <div class="feature-dot"><i class="fa-solid fa-check" style="font-size: 10px; color: white;"></i></div>
+          Easy-to-use Interface
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: form -->
+  <div class="form-side">
+    <div class="form-container">
+
+      <div class="anim-up">
+        <h2 class="fw-bold mb-1" style="font-size: 2rem; color: #0f172a;">Create Account</h2>
+        <p class="text-muted mb-4" style="font-size: 0.95rem;">Set up your profile to start logging.</p>
+      </div>
+
+      <% if @user.errors.any? %>
+        <div class="alert border-0 mb-4 anim-up shake"
+             style="background: #fef2f2; color: #b91c1c; border-radius: 10px; font-size: 0.88rem; padding: 12px 16px;">
+          <ul class="mb-0 ps-3">
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @user, url: users_path do |f| %>
+
+        <div class="mb-3 anim-up delay-1">
+          <%= f.label :email, "Email", class: "field-label" %>
+          <%= f.email_field :email,
+                class: "form-control",
+                placeholder: "you@example.com" %>
+        </div>
+
+        <!-- Password with Toggle -->
+        <div class="mb-3 anim-up delay-2">
+          <%= f.label :password, "Password", class: "field-label" %>
+          <div class="position-relative">
+            <%= f.password_field :password, 
+                  class: "form-control pe-5", 
+                  id: "password_field", 
+                  placeholder: "••••••••" %>
+            <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_field', this)"></i>
+          </div>
+        </div>
+
+        <!-- Confirm Password with Toggle -->
+        <div class="mb-4 anim-up delay-3">
+          <%= f.label :password_confirmation, "Confirm Password", class: "field-label" %>
+          <div class="position-relative">
+            <%= f.password_field :password_confirmation, 
+                  class: "form-control pe-5", 
+                  id: "password_conf_field", 
+                  placeholder: "••••••••" %>
+            <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_conf_field', this)"></i>
+          </div>
+        </div>
+
+        <div class="anim-up delay-4">
+          <%= f.submit "Register Now", class: "btn-primary-custom" %>
+        </div>
+
+      <% end %>
+
+      <div class="text-center mt-4 anim-up delay-5">
+        <p class="text-muted" style="font-size: 0.88rem;">
+          Already a member? <%= link_to "Login here", login_path, class: "link-blue" %>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>

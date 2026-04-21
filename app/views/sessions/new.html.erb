@@ -1,0 +1,71 @@
+<div class="split-container">
+
+  <!-- Left: brand -->
+  <div class="brand-side">
+    <div class="brand-content anim-left">
+      <i class="fa-solid fa-shield-heart icon-pulse mb-3" style="color: #7dd3fc;"></i>
+
+      <!-- ECG line SVG -->
+      <svg class="ecg-line" viewBox="0 0 280 48" xmlns="http://www.w3.org/2000/svg">
+        <path class="ecg-path" d="M0,24 L40,24 L52,24 L58,6 L66,42 L72,14 L78,24 L130,24 L142,24 L148,6 L156,42 L162,14 L168,24 L280,24"/>
+      </svg>
+
+      <h1 class="fw-bold mb-3" style="font-size: 2.8rem; line-height: 1.2;">Welcome<br>Back.</h1>
+      <p style="opacity: 0.75; font-size: 1rem; max-width: 320px; line-height: 1.6;">
+        Your vitals are safe with us. Log in to your secure health portal.
+      </p>
+    </div>
+  </div>
+
+  <!-- Right: form -->
+  <div class="form-side">
+    <div class="form-container">
+
+      <div class="anim-up">
+        <h2 class="fw-bold mb-1" style="font-size: 2rem; color: #0f172a;">Sign In</h2>
+        <p class="text-muted mb-4" style="font-size: 0.95rem;">Enter your email and password below.</p>
+      </div>
+
+      <% if flash[:alert] %>
+        <div class="alert border-0 mb-4 anim-up shake"
+             style="background: #fef2f2; color: #b91c1c; border-radius: 10px; font-size: 0.9rem; padding: 12px 16px;">
+          <i class="fa-solid fa-circle-exclamation me-2"></i><%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <%= form_with url: login_path do |f| %>
+
+        <div class="mb-3 anim-up delay-1">
+          <%= f.label :email, "Email", class: "field-label" %>
+          <%= f.email_field :email,
+                class: "form-control",
+                placeholder: "you@example.com" %>
+        </div>
+
+        <div class="mb-4 anim-up delay-2">
+          <%= f.label :password, "Password", class: "field-label" %>
+          <div class="position-relative">
+          <%= f.password_field :password,
+                class: "form-control pe-5",
+                id: "password_field", 
+                placeholder: "Enter your password" %>
+          <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_field', this)"></i>
+          </div>
+        </div>
+
+        <div class="anim-up delay-3">
+          <%= f.submit "Access Portal", class: "btn-primary-custom" %>
+        </div>
+
+      <% end %>
+
+      <div class="text-center mt-4 anim-up delay-4">
+        <p class="text-muted" style="font-size: 0.88rem;">
+          New to VitalBeat? <%= link_to "Create Account", signup_path, class: "link-blue" %>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+</div>

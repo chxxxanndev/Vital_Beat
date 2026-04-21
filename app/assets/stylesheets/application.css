@@ -1,0 +1,92 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+/* --- DASHBOARD THEME VARIABLES --- */
+:root {
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f8fafc;
+  --color-background-tertiary: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-tertiary: #94a3b8;
+  --color-border-tertiary: #e2e8f0;
+  --border-radius-lg: 12px;
+  --border-radius-md: 8px;
+}
+
+/* --- DASHBOARD LAYOUT --- */
+.dash { display: grid; grid-template-rows: auto auto auto; gap: 16px; padding: 20px; max-width: 1100px; margin: 0 auto; }
+
+.topbar-dash { 
+  display: flex; align-items: center; justify-content: space-between; 
+  padding: 14px 20px; background: white; border-radius: var(--border-radius-lg); 
+  border: 1px solid var(--color-border-tertiary); 
+}
+
+/* Stats Cards */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.stat-card { background: white; border-radius: var(--border-radius-md); padding: 18px; border: 1px solid var(--color-border-tertiary); }
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 8px; letter-spacing: 0.05em;}
+.stat-val { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 5px; color: #1e293b; }
+
+/* Colors */
+.val-blue { color: #1a73c1; }
+.val-green { color: #10b981; }
+.val-amber { color: #f59e0b; }
+
+/* Badges */
+.badge-custom { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 600; display: inline-block; }
+.badge-up { background: #ecfdf5; color: #065f46; }
+.badge-warn { background: #fffbeb; color: #92400e; }
+
+/* Grid */
+.main-grid { display: grid; grid-template-columns: 1fr 300px; gap: 16px; }
+@media (max-width: 992px) { .main-grid { grid-template-columns: 1fr; } }
+
+.chart-card, .log-card, .mini-card { 
+  background: white; border-radius: var(--border-radius-lg); 
+  border: 1px solid var(--color-border-tertiary); padding: 20px; 
+}
+
+/* Tables */
+.log-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.log-table th { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; padding: 12px 8px; text-align: left; border-bottom: 1px solid var(--color-border-tertiary); }
+.log-table td { padding: 12px 8px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+
+/* Status Dots */
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+.dot-normal { background: #10b981; }
+.dot-high { background: #ef4444; }
+.dot-elevated { background: #f59e0b; }
+
+.logout-btn-dash { font-size: 12px; color: #ef4444; border: 1px solid #fee2e2; padding: 5px 12px; border-radius: 6px; background: #fef2f2; }
+
+
+/* This makes the icon sit inside the input box */
+.password-toggle-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #94a3b8; /* Slate color to match your text-muted */
+  font-size: 0.9rem;
+  z-index: 10; /* Ensures it sits on top of the input */
+  transition: color 0.2s;
+}
+
+.password-toggle-icon:hover {
+  color: #0f172a; /* Darker on hover */
+}
+
+/* Adds space so the password dots don't go under the eye icon */
+.form-control.pe-5 {
+  padding-right: 40px !important;
+}
