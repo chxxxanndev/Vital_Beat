@@ -3,7 +3,7 @@
   <!-- Left: brand -->
   <div class="brand-side">
     <div class="brand-content anim-left">
-      <i class="fa-solid fa-shield-heart icon-pulse mb-3" style="color: #7dd3fc;"></i>
+      <i class="fa-solid fa-shield-heart icon-pulse mb-3" style="color: #FF2400;"></i>
 
       <!-- ECG line SVG -->
       <svg class="ecg-line" viewBox="0 0 280 48" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +51,13 @@
                 placeholder: "Enter your password" %>
           <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_field', this)"></i>
           </div>
+        <div class="text-end mb-4">
+          <%= link_to "Forgot Password?", password_reset_path, class: "link-rose small fw-bold text-decoration-none" %>
         </div>
+
+        </div>
+
+
 
         <div class="anim-up delay-3">
           <%= f.submit "Access Portal", class: "btn-primary-custom" %>

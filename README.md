@@ -106,3 +106,40 @@ What to say: "I used CSS classes like animate__fadeInLeft for the entrance. For 
 What to say: "Ruby is the object-oriented programming language. Rails is the web framework built on top of it. Rails provides the 'Rails' (structure) so I can focus on building the Heart Rate logic instead of reinventing the wheel for things like routing and database connections."
 
 "I used a Model-View-Controller (MVC) architecture with a MySQL backend, secured the passwords using BCrypt hashing, and implemented a responsive UI using Bootstrap components."
+
+
+
+## 📂 Project Structure
+
+VitalBeat follows the standard **Model-View-Controller (MVC)** architecture provided by Ruby on Rails 7.
+
+```text
+VitalBeat/
+├── app/
+│   ├── assets/              # Frontend assets (Images & CSS)
+│   │   └── stylesheets/     # Custom CSS for split-screen & dashboard
+│   ├── controllers/         # The logic/brains of the application
+│   │   ├── application_controller.rb
+│   │   ├── home_controller.rb
+│   │   ├── sessions_controller.rb
+│   │   └── users_controller.rb
+│   ├── models/              # Database blueprints and validations
+│   │   ├── application_record.rb
+│   │   └── user.rb          # Logic for BCrypt secure passwords
+│   └── views/               # The User Interface (HTML.ERB)
+│       ├── home/            # Dashboard view with mock data
+│       ├── layouts/         # Global application shell (Head & Navbar)
+│       ├── sessions/        # Login interface
+│       └── users/           # Registration interface
+├── bin/                     # Application executable scripts
+├── config/                  # Core settings
+│   ├── database.yml         # MySQL connection settings
+│   └── routes.rb            # URL-to-Logic mapping (The "Traffic Cop")
+├── db/                      # Database files
+│   ├── migrate/             # History of table changes
+│   └── schema.rb            # Current snapshot of MySQL structure
+├── public/                  # Static files (Icons & Error pages)
+├── Gemfile                  # List of project dependencies (Bcrypt, Rails, etc.)
+├── README.md                # Project documentation
+├── .ruby-version            # Ruby environment specification
+└── Dockerfile               # Production deployment blueprint

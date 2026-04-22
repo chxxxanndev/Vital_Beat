@@ -1,0 +1,39 @@
+<div class="split-container">
+  <div class="brand-side">
+    <div class="brand-content animate__animated animate__fadeInLeft">
+      <i class="fa-solid fa-lock icon-pulse mb-3" style="color: #fecdd3; font-size: 3.2rem;"></i>
+      <h1 class="fw-bold mb-3" style="font-size: 2.8rem; line-height: 1.2;">New<br>Start.</h1>
+      <p style="opacity: 0.75; font-size: 1rem; max-width: 320px;">Choose a strong new password to protect your health data.</p>
+    </div>
+  </div>
+
+  <div class="form-side">
+    <div class="form-container">
+      <h2 class="fw-bold mb-1">Set New Password</h2>
+      <p class="text-muted mb-5">Please enter your new credentials below.</p>
+
+      <%= form_with model: @user, url: password_reset_edit_path(token: params[:token]), method: :patch do |f| %>
+        
+        <div class="mb-3">
+          <%= f.label :password, "New Password", class: "field-label" %>
+          <div class="position-relative">
+            <%= f.password_field :password, class: "form-control pe-5", id: "password_field", placeholder: "••••••••" %>
+            <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_field', this)"></i>
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <%= f.label :password_confirmation, "Confirm New Password", class: "field-label" %>
+          <div class="position-relative">
+            <%= f.password_field :password_confirmation, class: "form-control pe-5", id: "password_conf_field", placeholder: "••••••••" %>
+            <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_conf_field', this)"></i>
+          </div>
+        </div>
+
+        <div class="d-grid">
+          <%= f.submit "Update Password", class: "btn-primary-custom" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

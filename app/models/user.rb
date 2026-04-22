@@ -3,5 +3,5 @@ class User < ApplicationRecord
 
   # Validations to make sure data is clean
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, allow_nil: true
 end

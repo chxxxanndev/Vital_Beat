@@ -1,0 +1,29 @@
+<div class="split-container">
+  <div class="brand-side">
+     <div class="brand-content animate__animated animate__fadeInLeft">
+        <i class="fa-solid fa-key icon-pulse mb-3" style="color: #fecdd3; font-size: 3.2rem;"></i>
+        <h1 class="fw-bold mb-3" style="font-size: 2.8rem;">Lost your<br>way?</h1>
+        <p style="opacity: 0.75; font-size: 1rem; max-width: 320px;">No worries. We'll help you get back to tracking your vitals safely.</p>
+     </div>
+  </div>
+  <div class="form-side">
+    <div class="form-container">
+      <h2 class="fw-bold mb-1">Reset Password</h2>
+      <p class="text-muted mb-4">Enter your email and we'll generate a reset link.</p>
+
+      <%= form_with url: password_reset_path do |f| %>
+        <div class="mb-4">
+          <%= f.label :email, class: "field-label" %>
+          <%= f.email_field :email, class: "form-control", placeholder: "you@example.com" %>
+        </div>
+        <div class="d-grid">
+          <%= f.submit "Generate Link", class: "btn-primary-custom" %>
+        </div>
+      <% end %>
+      
+      <div class="text-center mt-4">
+        <%= link_to "Back to Login", login_path, class: "link-rose small fw-bold text-decoration-none" %>
+      </div>
+    </div>
+  </div>
+</div>
