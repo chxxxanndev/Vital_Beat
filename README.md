@@ -117,29 +117,81 @@ VitalBeat follows the standard **Model-View-Controller (MVC)** architecture prov
 VitalBeat/
 ├── app/
 │   ├── assets/              # Frontend assets (Images & CSS)
+│   │   ├── images
 │   │   └── stylesheets/     # Custom CSS for split-screen & dashboard
-│   ├── controllers/         # The logic/brains of the application
+│   ├── controllers/         # The logic/brains of the application.
+│   │   ├── concerns
 │   │   ├── application_controller.rb
+│   │   ├── password_resets_controller.rb
 │   │   ├── home_controller.rb
 │   │   ├── sessions_controller.rb
 │   │   └── users_controller.rb
+│   ├── helpers/         
+│   │   ├── application_helper.rb
+│   │   ├── home_helper.rb
+│   │   ├── sessions_helper.rb
+│   │   └── users_helper.rb
+│   ├── jobs/         
+│   │   └── application_job.rb
+│   ├── mailers/         
+│   │   └── application_mailer.rb
 │   ├── models/              # Database blueprints and validations
+│   │   ├── concerns
 │   │   ├── application_record.rb
 │   │   └── user.rb          # Logic for BCrypt secure passwords
 │   └── views/               # The User Interface (HTML.ERB)
 │       ├── home/            # Dashboard view with mock data
 │       ├── layouts/         # Global application shell (Head & Navbar)
+│       ├── password_resets
+│       ├── pwa
 │       ├── sessions/        # Login interface
 │       └── users/           # Registration interface
 ├── bin/                     # Application executable scripts
 ├── config/                  # Core settings
+│   ├── environments/
+│   ├── initializers/
+│   ├── locales/
 │   ├── database.yml         # MySQL connection settings
 │   └── routes.rb            # URL-to-Logic mapping (The "Traffic Cop")
 ├── db/                      # Database files
 │   ├── migrate/             # History of table changes
+│   ├── seeds.rb
 │   └── schema.rb            # Current snapshot of MySQL structure
+├── lib/
 ├── public/                  # Static files (Icons & Error pages)
+├── script/
+├── storage/
+├── test/
 ├── Gemfile                  # List of project dependencies (Bcrypt, Rails, etc.)
 ├── README.md                # Project documentation
 ├── .ruby-version            # Ruby environment specification
 └── Dockerfile               # Production deployment blueprint
+
+
+The folders you actively work in (important ✅)
+
+app/controllers/ — this is where your logic lives. Every action (login, signup, show page) is handled here. As you add heart rates, you'll add heart_rates_controller.rb here.
+app/models/ — your database blueprints. You have user.rb now, and you'll add heart_rate.rb soon.
+app/views/ — all your HTML/ERB files. What the user actually sees. You'll add a heart_rates/ folder here.
+app/assets/stylesheets/ — your CSS lives here. This is the application.css you've been editing.
+config/routes.rb — the "traffic cop." Every URL in your app is defined here. Important to keep clean.
+db/migrate/ — history of all your database changes. Never delete these, your instructor will likely check this.
+db/schema.rb — auto-generated snapshot of your current database. Never manually edit this.
+Gemfile — your dependencies list. BCrypt, Rails, MySQL adapter are all listed here.
+
+Folders you don't touch much but should keep 🟡
+config/database.yml — your MySQL connection settings. Keep it but don't share it publicly.
+config/environments/ — settings for development vs production. Leave as is.
+public/ — error pages (404, 500) live here. Keep them.
+bin/ — Rails executable scripts. Never touch these.
+
+Files/folders safe to ignore or delete for cleanliness 🗑️
+app/helpers/ — home_helper.rb, sessions_helper.rb, users_helper.rb are all empty by default and do nothing. You can delete all except application_helper.rb unless you've added code in them.
+app/jobs/application_job.rb — for background jobs like sending emails asynchronously. Not needed for your project at this stage.
+app/mailers/application_mailer.rb — for sending emails. You have a password_resets_controller.rb so if password reset emails aren't working yet, this is unused. Safe to leave but not critical.
+lib/ — empty in most beginner Rails projects. Safe to leave empty.
+storage/ — used for file uploads (like profile pictures). Not needed for a heart rate log.
+script/ — usually empty. Safe to ignore.
+test/ — for automated tests. Your instructor may not require this, but don't delete it as Rails expects it to exist.
+Dockerfile — only needed for deployment to a server. Not needed for a local demo tomorrow. Safe to ignore.
+.ruby-version — just specifies which Ruby version to use. Keep it, it's tiny and harmless.

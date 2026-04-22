@@ -1,8 +1,403 @@
-<% if current_user %>
-  <p>Logged in as: <%= current_user.email %></p>
-  <h1>Hello, <%= current_user.email if current_user %>!</h1>
-  <%= link_to "Logout", logout_path, data: { turbo_method: :delete } %>
-<% else %>
-  <%= link_to "Sign Up", signup_path %> | 
-  <%= link_to "Login", login_path %>
-<% end %>
+<div class="home-wrap">
+
+  <!-- Top greeting bar -->
+  <div class="home-topbar">
+    <div>
+      <p class="home-greeting">Good day,</p>
+      <h1 class="home-name"><%= current_user.name.split(" ").first %>!</h1>
+    </div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="home-stats">
+    <div class="home-stat-card anim-up delay-1">
+      <div class="home-stat-icon" style="background: #f3e8ff;">
+        <i class="fa-solid fa-heart-pulse" style="color: #7b2d5e;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Latest BPM</p>
+        <p class="home-stat-val">-- <span class="home-stat-unit">bpm</span></p>
+      </div>
+    </div>
+
+    <div class="home-stat-card anim-up delay-2">
+      <div class="home-stat-icon" style="background: #fce7f3;">
+        <i class="fa-solid fa-chart-line" style="color: #be185d;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Total Logs</p>
+        <p class="home-stat-val">-- <span class="home-stat-unit">entries</span></p>
+      </div>
+    </div>
+
+    <div class="home-stat-card anim-up delay-3">
+      <div class="home-stat-icon" style="background: #ede9fe;">
+        <i class="fa-solid fa-calendar-check" style="color: #6d28d9;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Last Logged</p>
+        <p class="home-stat-val" style="font-size: 1rem;">--</p>
+      </div>
+    </div>
+
+    <div class="home-stat-card anim-up delay-4">
+      <div class="home-stat-icon" style="background: #fff1f2;">
+        <i class="fa-solid fa-shield-heart" style="color: #e11d48;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Health Status</p>
+        <p class="home-stat-val" style="font-size: 1rem;">--</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content grid -->
+  <div class="home-grid">
+
+    <!-- Welcome panel -->
+    <div class="home-card anim-up delay-2">
+      <div class="home-card-header">
+        <h2 class="home-card-title"><i class="fa-solid fa-house me-2"></i>Welcome to VitalBeat</h2>
+      </div>
+      <div class="home-welcome-body">
+        <div class="home-welcome-illustration">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 class="home-welcome-heading">Your Heart Health Dashboard</h3>
+        <p class="home-welcome-sub">
+          Track, monitor, and understand your heart rate over time.
+          This is your personal space to keep a professional record of your heart health journey.
+        </p>
+        <div class="home-welcome-badges">
+          <span class="home-badge"><i class="fa-solid fa-lock me-1"></i>Secure</span>
+          <span class="home-badge"><i class="fa-solid fa-bolt me-1"></i>Real-time</span>
+          <span class="home-badge"><i class="fa-solid fa-shield-heart me-1"></i>Health Focused</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side panel -->
+    <div>
+
+      <!-- Account info -->
+      <div class="home-card mb-3 anim-up delay-3">
+        <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-user me-2"></i>Account</h2>
+
+        <div class="home-account-avatar">
+          <%= current_user.name.split(" ").first[0].upcase %>
+        </div>
+
+        <div class="home-account-row">
+          <span class="home-account-label">Name</span>
+          <span class="home-account-val"><%= current_user.name.split(" ").first %></span>
+        </div>
+        <div class="home-account-row">
+          <span class="home-account-label">Email</span>
+          <span class="home-account-val"><%= current_user.email %></span>
+        </div>
+        <div class="home-account-row">
+          <span class="home-account-label">Member since</span>
+          <span class="home-account-val"><%= current_user.created_at.strftime("%b %d, %Y") %></span>
+        </div>
+        <div class="home-account-row" style="border-bottom: none;">
+          <span class="home-account-label">Status</span>
+          <span class="home-badge-green"><i class="fa-solid fa-circle me-1" style="font-size: 7px;"></i>Active</span>
+        </div>
+      </div>
+
+      <!-- BPM guide -->
+      <div class="home-card anim-up delay-4">
+        <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-info me-2"></i>BPM Guide</h2>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#10b981;"></span>
+          <span class="home-bpm-label">Normal</span>
+          <span class="home-bpm-range">60 – 100 bpm</span>
+        </div>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#f59e0b;"></span>
+          <span class="home-bpm-label">Elevated</span>
+          <span class="home-bpm-range">101 – 120 bpm</span>
+        </div>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#e11d48;"></span>
+          <span class="home-bpm-label">High</span>
+          <span class="home-bpm-range">121+ bpm</span>
+        </div>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#6d28d9;"></span>
+          <span class="home-bpm-label">Low</span>
+          <span class="home-bpm-range">Below 60 bpm</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .home-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 24px;
+  }
+
+  /* Top bar */
+  .home-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .home-greeting {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .home-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .home-topbar-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Buttons */
+  .home-btn-primary {
+    background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .home-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(123, 45, 94, 0.3);
+    color: white;
+  }
+  .home-btn-ghost {
+    background: transparent;
+    color: #7b2d5e;
+    border: 1.5px solid #e9d5e2;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .home-btn-ghost:hover {
+    background: #fdf2f8;
+    border-color: #d8b4c8;
+    color: #7b2d5e;
+  }
+
+  /* Stat cards */
+  .home-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .home-stat-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #f0e6ed;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .home-stat-card:hover {
+    box-shadow: 0 6px 20px rgba(123,45,94,0.1);
+    transform: translateY(-2px);
+  }
+  .home-stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .home-stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94a3b8;
+    margin: 0 0 4px;
+  }
+  .home-stat-val {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1;
+  }
+  .home-stat-unit {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94a3b8;
+  }
+
+  /* Main grid */
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 16px;
+  }
+  @media (max-width: 900px) { .home-grid { grid-template-columns: 1fr; } }
+
+  /* Cards */
+  .home-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #f0e6ed;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .home-card:hover { box-shadow: 0 4px 18px rgba(123,45,94,0.07); }
+  .home-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .home-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  /* Welcome panel */
+  .home-welcome-body {
+    text-align: center;
+    padding: 30px 20px;
+  }
+  .home-welcome-illustration {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    color: #7b2d5e;
+    margin: 0 auto 16px;
+    animation: iconPulse 2.2s ease-in-out infinite;
+  }
+  .home-welcome-heading {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+  }
+  .home-welcome-sub {
+    font-size: 0.88rem;
+    color: #64748b;
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto 20px;
+  }
+  .home-welcome-badges {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .home-badge {
+    background: #f3e8ff;
+    color: #7b2d5e;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  .home-badge-green {
+    background: #ecfdf5;
+    color: #065f46;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Account avatar */
+  .home-account-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 12px rgba(123,45,94,0.25);
+  }
+
+  /* Account info */
+  .home-account-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid #fdf2f8;
+    gap: 12px;
+  }
+  .home-account-label {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .home-account-val {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: right;
+    word-break: break-all;
+  }
+
+  /* BPM guide */
+  .home-bpm-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #fdf2f8;
+    font-size: 0.85rem;
+  }
+  .home-bpm-row:last-child { border-bottom: none; }
+  .home-bpm-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .home-bpm-label {
+    font-weight: 600;
+    color: #374151;
+    flex: 1;
+  }
+  .home-bpm-range {
+    color: #94a3b8;
+    font-size: 0.8rem;
+  }
+</style>

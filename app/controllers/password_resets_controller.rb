@@ -7,10 +7,10 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user.present?
       # Generate a secure token
-      @user.update!(
+        @user.update_columns(
         reset_password_token: SecureRandom.urlsafe_base64,
         reset_password_sent_at: Time.now
-      )
+        )
       
       # IN REAL LIFE: Send an email here.
       # FOR YOUR DEFENSE: Tell the teacher we "simulated" the email.
@@ -28,7 +28,7 @@ class PasswordResetsController < ApplicationController
 
   def edit
     @user = User.find_by(reset_password_token: params[:token])
-    if @user.nil? || @user.reset_password_sent_at < 2.hours.ago
+    if @user.nil? || @user.reset_password_sent_at < 0.5.hours.ago
       redirect_to password_reset_path, alert: "Reset link has expired or is invalid."
     end
   end
