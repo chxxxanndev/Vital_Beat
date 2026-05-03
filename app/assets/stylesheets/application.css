@@ -11,6 +11,22 @@
   --border-radius-md: 8px;
 }
 
+
+/* Base Mobile-First Layout (Stacked) */
+.split-container { 
+  display: flex; 
+  flex-direction: column; /* Stacked on mobile */
+  min-height: 100vh; 
+  overflow-y: auto; /* Allows scrolling on small screens */
+}
+.brand-side {
+  flex: none;
+  background: linear-gradient(135deg, var(--brand-rose) 0%, var(--brand-rose-dark) 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center; /* Centered for mobile */
+}
+
 /* --- DASHBOARD LAYOUT --- */
 .dash { display: grid; grid-template-rows: auto auto auto; gap: 16px; padding: 20px; max-width: 1100px; margin: 0 auto; }
 
@@ -79,4 +95,20 @@
 /* Adds space so the password dots don't go under the eye icon */
 .form-control.pe-5 {
   padding-right: 40px !important;
+}
+
+
+/* Desktop Layout (768px and up) */
+@media (min-width: 768px) {
+  .split-container { 
+    flex-direction: row; /* Side-by-side on desktop */
+    height: 100vh;
+    overflow: hidden; /* No scroll on desktop */
+  }
+
+  .brand-side {
+    flex: 1.2;
+    padding: 80px;
+    text-align: left; /* Back to left-aligned */
+  }
 }
