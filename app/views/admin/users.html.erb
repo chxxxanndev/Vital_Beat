@@ -6,19 +6,43 @@
     </div>
   </div>
 
-  <!-- Search & Filter Bar -->
-  <div class="home-card shadow-sm border-0 rounded-4 p-3 mb-4">
-    <%= form_with url: admin_users_path, method: :get, class: "d-flex gap-2" do %>
-      <div class="input-group">
-        <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
-        <%= text_field_tag :query, params[:query], class: "form-control border-start-0", placeholder: "Search by name or email...", onchange: "this.form.requestSubmit()" %>
-      </div>
-      <%= submit_tag "Search", class: "btn btn-primary px-4 rounded-3", style: "background: #7b2d5e; border: none;" %>
-      <% if params[:query].present? %>
-        <%= link_to "Clear", admin_users_path, class: "btn btn-light" %>
-      <% end %>
+<!-- Search & Filter Bar -->
+<div class="home-card shadow-sm border-0 rounded-4 p-3 mb-4">
+  <%= form_with url: admin_users_path, method: :get, class: "d-flex gap-2" do %>
+    
+    <div class="input-group">
+      <span class="input-group-text bg-white border-end-0 text-muted">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+
+      <%= text_field_tag :query,
+          params[:query],
+          class: "form-control border-start-0",
+          placeholder: "Search by name or email...",
+          onchange: "this.form.requestSubmit()" %>
+    </div>
+
+    <%= submit_tag "Search",
+        class: "btn btn-primary px-4 rounded-3",
+        style: "background: #7b2d5e; border: none;" %>
+
+    <% if params[:query].present? %>
+      <%= link_to "Clear",
+          admin_users_path,
+          class: "btn btn-light px-4 rounded-3 d-flex align-items-center justify-content-center" %>
     <% end %>
-  </div>
+
+  <% end %>
+</div>
+
+    <% flash.each do |type, msg| %>
+    <div class="alert alert-<%= type == 'notice' ? 'success' : 'danger' %> shadow-sm border-0 rounded-3 mb-4">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid <%= type == 'notice' ? 'fa-circle-check' : 'fa-circle-exclamation' %> me-2"></i>
+        <%= msg %>
+      </div>
+    </div>
+  <% end %>
 
   <!-- Detailed Table -->
   <div class="home-card shadow-sm border-0 rounded-4 overflow-hidden">

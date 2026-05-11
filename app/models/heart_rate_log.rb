@@ -2,9 +2,10 @@ class HeartRateLog < ApplicationRecord
   belongs_to :user
   
   # Validations to prevent bad data
-  validates :bpm, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :bpm, presence: true, numericality: { only_integer: true, greater_than: 30, less_than: 250 }
   validates :recorded_at, presence: true
-
+  validates :status, presence: { message: "must be selected. We need to know your activity to analyze your heart rate." }
+  validates :notes, length: { maximum: 500, message: "is too long (maximum 500 characters)" }
 
   # This runs every time you click "Save"
   before_save :calculate_vitals

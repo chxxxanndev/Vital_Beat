@@ -23,7 +23,7 @@
         <% if @logs.any? %>
           <% @logs.each do |log| %>
             <tr>
-              <td class="ps-4 small text-muted"><%= log.recorded_at.strftime("%b %d, %H:%M") %></td>
+              <td class="ps-4 small text-muted"><%= log.recorded_at.in_time_zone('Asia/Manila').strftime("%b %d, %I:%M %p") %></td>
               <td class="fw-bold"><%= log.bpm %> bpm</td>
               <td><span class="badge rounded-pill bg-light text-dark"><%= log.status %></span></td>
               <td class="fw-bold" style="color: <%= zone_color(log.zone) %>"><%= log.zone %></td>

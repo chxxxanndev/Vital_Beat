@@ -1,4 +1,14 @@
 <div class="home-wrap animate__animated animate__fadeIn">
+
+  <% flash.each do |type, msg| %>
+    <div class="alert alert-<%= type == 'notice' ? 'success' : 'danger' %> shadow-sm border-0 rounded-3 mb-4 animate__animated animate__fadeInDown">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid <%= type == 'notice' ? 'fa-circle-check' : 'fa-circle-exclamation' %> me-2"></i>
+        <%= msg %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="home-topbar">
     <div>
       <p class="home-greeting">System Administration</p>

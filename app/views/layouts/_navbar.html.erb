@@ -9,16 +9,19 @@
   <!-- Divider -->
   <div style="width: 1px; height: 36px; background: #f0e6ed;"></div>
 
+  <!-- Center: Tagline -->
+  <div class="d-flex align-items-center justify-content-center flex-grow-1">
+    <span class="navbar-tagline">
+      <i class="fa-solid fa-heart-pulse me-2 navbar-tagline-icon"></i>Track Your Heart Health Daily
+    </span>
+  </div>
+
   <!-- Right side -->
-  <div class="d-flex align-items-center justify-content-end flex-grow-1 px-4 gap-3">
-
-    <!-- Current user name -->
+  <div class="d-flex align-items-center justify-content-end px-4 gap-3" style="flex-shrink: 0;">
     <span class="small fw-semibold text-dark"><%= current_user.name %></span>
-
-    <!-- Logout -->
     <%= link_to logout_path, class: "btn btn-sm btn-outline-danger rounded-pill px-3", style: "font-size: 0.8rem;" do %>
       <i class="fa-solid fa-power-off me-1"></i> Logout
     <% end %>
-
   </div>
+
 </nav>

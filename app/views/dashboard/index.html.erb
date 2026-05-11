@@ -1,143 +1,310 @@
 <div class="home-wrap">
 
-  <!-- Top greeting bar -->
-  <div class="home-topbar">
+  <% flash.each do |type, msg| %>
+    <div class="alert alert-<%= type == 'notice' ? 'success' : 'danger' %> shadow-sm border-0 rounded-3 mb-4 animate__animated animate__fadeInDown">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid <%= type == 'notice' ? 'fa-circle-check' : 'fa-circle-exclamation' %> me-2"></i>
+        <%= msg %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Greeting + New Log Button -->
+  <div class="home-topbar mb-4">
     <div class="animate__animated animate__fadeInLeft d-flex align-items-center gap-3">
-      
-      <!-- Avatar -->
       <% if current_user.profile&.avatar&.attached? %>
-        <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width: 60px; height: 60px; object-fit: cover; border: 3px solid #f0e6ed;" %>
+        <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width:64px;height:64px;object-fit:cover;border:3px solid #f0e6ed;box-shadow:0 4px 12px rgba(123,45,94,0.2);" %>
       <% else %>
-        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4a1c6e, #7b2d5e); font-size: 1.4rem;">
+        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0" style="width:64px;height:64px;background:linear-gradient(135deg,#4a1c6e,#7b2d5e);font-size:1.4rem;box-shadow:0 4px 12px rgba(123,45,94,0.3);">
           <%= current_user.name[0].upcase %>
         </div>
       <% end %>
-
       <div>
         <p class="home-greeting">Good day,</p>
         <h1 class="home-name"><%= current_user.name.split(" ").first %>!</h1>
       </div>
     </div>
-
-    <div class="animate__animated animate__fadeInRight">
-      <%= link_to new_heart_rate_log_path, class: "home-btn-primary d-flex align-items-center gap-2" do %>
-        <i class="fa-solid fa-plus"></i> New Log
-      <% end %>
-    </div>
   </div>
 
-  <!-- Stat cards -->
+  <!-- 4 Stat Cards -->
   <div class="home-stats mb-4">
-    <!-- 1. Latest BPM -->
     <div class="home-stat-card anim-up delay-1">
-      <div class="home-stat-icon">
-        <i class="fa-solid fa-heart-pulse" style="color: #7b2d5e;"></i>
+      <div class="home-stat-icon" style="background:#f3e8ff;">
+        <i class="fa-solid fa-heart-pulse" style="color:#7b2d5e;"></i>
       </div>
       <div>
         <p class="home-stat-label">Latest BPM</p>
-        <p class="home-stat-val">
-          <%= @latest_log ? @latest_log.bpm : "--" %> <span class="home-stat-unit">bpm</span>
-        </p>
+        <p class="home-stat-val"><%= @latest_log ? @latest_log.bpm : "--" %> <span class="home-stat-unit">bpm</span></p>
       </div>
     </div>
-
-    <!-- 2. Total Logs -->
     <div class="home-stat-card anim-up delay-2">
-      <div class="home-stat-icon">
-        <i class="fa-solid fa-chart-line" style="color: #be185d;"></i>
+      <div class="home-stat-icon" style="background:#fce7f3;">
+        <i class="fa-solid fa-chart-line" style="color:#be185d;"></i>
       </div>
       <div>
         <p class="home-stat-label">Total Logs</p>
         <p class="home-stat-val"><%= @logs.count %></p>
       </div>
     </div>
-
-    <!-- 3. Last Activity -->
     <div class="home-stat-card anim-up delay-3">
-      <div class="home-stat-icon">
-        <i class="fa-solid fa-calendar-check" style="color: #6d28d9;"></i>
+      <div class="home-stat-icon" style="background:#ede9fe;">
+        <i class="fa-solid fa-calendar-check" style="color:#6d28d9;"></i>
       </div>
       <div>
         <p class="home-stat-label">Last Logged</p>
-        <p class="home-stat-val" style="font-size: 0.95rem;">
+        <p class="home-stat-val" style="font-size:0.95rem;">
           <%= @latest_log ? "#{time_ago_in_words(@latest_log.recorded_at)} ago" : "No data" %>
         </p>
       </div>
     </div>
-
-    <!-- 4. Smart Health Status -->
     <div class="home-stat-card anim-up delay-4">
-      <div class="home-stat-icon">
-        <i class="fa-solid fa-shield-heart" style="color: #e11d48;"></i>
+      <div class="home-stat-icon" style="background:#fff1f2;">
+        <i class="fa-solid fa-shield-heart" style="color:#e11d48;"></i>
       </div>
       <div>
         <p class="home-stat-label">Health Status</p>
-        <p class="home-stat-val" style="font-size: 1rem;">
+        <p class="home-stat-val" style="font-size:1rem;">
           <% if @latest_log %>
             <% case @latest_log.bpm
-              when 0..59 %>
-                <span style="color: #6d28d9;">Low</span>
-            <% when 60..100 %>
-                <span style="color: #10b981;">Normal</span>
-            <% when 101..120 %>
-                <span style="color: #f59e0b;">Elevated</span>
-            <% else %>
-                <span style="color: #e11d48;">High</span>
+              when 0..59 then %><span style="color:#6d28d9;">Low</span>
+            <% when 60..100 then %><span style="color:#10b981;">Normal</span>
+            <% when 101..120 then %><span style="color:#f59e0b;">Elevated</span>
+            <% else %><span style="color:#e11d48;">High</span>
             <% end %>
-          <% else %>
-            Pending
-          <% end %>
+          <% else %>Pending<% end %>
         </p>
       </div>
     </div>
   </div>
 
-  <!-- Main content grid -->
-  <div class="home-grid">
-
-    <!-- Recent History Table -->
-    <div class="home-card anim-up delay-2">
-      <div class="home-card-header">
-        <h2 class="home-card-title"><i class="fa-solid fa-clock-rotate-left me-2"></i>Recent Logs</h2>
-      </div>
-      
-      <div class="table-responsive mt-3">
-        <table class="table table-hover align-middle border-0">
-          <thead class="text-muted small text-uppercase">
-            <tr>
-              <th class="border-0">Time</th>
-              <th class="border-0">Pulse</th>
-              <th class="border-0">Category</th>
-              <th class="border-0">Auto-Zone</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if @logs.any? %>
-              <% @logs.limit(5).each do |log| %>
-                <tr>
-                  <td class="text-muted border-0 small"><%= log.recorded_at.strftime("%b %d, %H:%M") %></td>
-                  <td class="fw-bold border-0"><%= log.bpm %> <small class="text-muted">bpm</small></td>
-                  <td class="border-0"><span class="home-badge"><%= log.status %></span></td>
-                  <td class="border-0 fw-semibold text-primary small"><%= log.zone %></td>
-                </tr>
-              <% end %>
-            <% else %>
-              <tr>
-                <td colspan="4" class="text-center py-5 text-muted border-0">
-                  Your history will appear here once you log your first pulse.
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+  <!-- Chart + Latest Log Preview side by side -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-8">
+      <div class="home-card anim-up delay-2 h-100">
+        <div class="home-card-header mb-3">
+          <h2 class="home-card-title"><i class="fa-solid fa-chart-area me-2"></i>BPM This Week</h2>
+          <span class="text-muted small">Last 7 days</span>
+        </div>
+        <% if @logs_this_week&.any? %>
+          <canvas id="bpmChart" style="max-height:220px;"></canvas>
+        <% else %>
+          <div class="text-center py-5 text-muted">
+            <i class="fa-solid fa-chart-area fa-2x mb-2 d-block" style="color:#f0e6ed;"></i>
+            <p class="small">No logs this week yet.</p>
+          </div>
+        <% end %>
       </div>
     </div>
+    <div class="col-md-4">
+      <div class="home-card anim-up delay-3 h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h2 class="home-card-title mb-3"><i class="fa-solid fa-bolt me-2" style="color:#7b2d5e;"></i>Latest Log</h2>
+          <% if @latest_log %>
+            <div class="text-center my-3">
+              <div style="font-size:3rem;font-weight:800;color:#7b2d5e;line-height:1;animation:iconPulse 2s ease-in-out infinite;">
+                <%= @latest_log.bpm %>
+              </div>
+              <div class="text-muted small mt-1">beats per minute</div>
+            </div>
+            <div class="d-flex flex-column gap-2 mt-3">
+              <div class="d-flex justify-content-between small">
+                <span class="text-muted">Zone</span>
+                <span class="fw-bold" style="color:#7b2d5e;"><%= @latest_log.zone %></span>
+              </div>
+              <div class="d-flex justify-content-between small">
+                <span class="text-muted">Status</span>
+                <span class="fw-bold"><%= @latest_log.status %></span>
+              </div>
+              <div class="d-flex justify-content-between small">
+                <span class="text-muted">MHR %</span>
+                <span class="fw-bold"><%= @latest_log.mhr_percentage %>%</span>
+              </div>
+              <div class="d-flex justify-content-between small">
+                <span class="text-muted">Logged</span>
+                <span class="fw-bold"><%= @latest_log.recorded_at.in_time_zone('Asia/Manila').strftime("%b %d, %I:%M %p") %></span>
+              </div>
+            </div>
+          <% else %>
+            <div class="text-center py-4 text-muted">
+              <i class="fa-solid fa-heart-crack fa-2x mb-2" style="color:#f0e6ed;"></i>
+              <p class="small">No logs yet.</p>
+            </div>
+          <% end %>
+        </div>
+        <% if @latest_log %>
+          <%= link_to heart_rate_logs_path, class: "btn btn-sm w-100 mt-3 rounded-3", style: "background:#f0e6ed;color:#7b2d5e;font-weight:600;" do %>
+            View All Logs <i class="fa-solid fa-arrow-right ms-1"></i>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-    <!-- Side panel -->
-    <div>
+  <!-- Weekly Insights (only if data exists) -->
+  <% if @logs_this_week&.any? %>
+    <div class="home-card anim-up delay-3 mb-4" style="background:linear-gradient(135deg,#4a1c6e08,#7b2d5e08);border:1px solid #f0e6ed;">
+      <div class="home-card-header mb-3">
+        <h2 class="home-card-title"><i class="fa-solid fa-brain me-2" style="color:#7b2d5e;"></i>Weekly Insights</h2>
+        <span class="text-muted small">Based on your last 7 days</span>
+      </div>
+      <div class="d-flex flex-wrap gap-3">
+        <% if @avg_bpm %>
+          <div class="home-stat-card flex-fill" style="min-width:160px;">
+            <div class="home-stat-icon" style="background:#f3e8ff;">
+              <i class="fa-solid fa-wave-square" style="color:#7b2d5e;"></i>
+            </div>
+            <div>
+              <p class="home-stat-label">Avg BPM (7 days)</p>
+              <p class="home-stat-val"><%= @avg_bpm %> <span class="home-stat-unit">bpm</span>
+                <% if @bpm_trend == :up %>
+                  <i class="fa-solid fa-arrow-trend-up ms-1" style="color:#e11d48;font-size:0.75rem;"></i>
+                <% elsif @bpm_trend == :down %>
+                  <i class="fa-solid fa-arrow-trend-down ms-1" style="color:#10b981;font-size:0.75rem;"></i>
+                <% else %>
+                  <i class="fa-solid fa-minus ms-1" style="color:#94a3b8;font-size:0.75rem;"></i>
+                <% end %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+        <% if @dominant_zone %>
+          <div class="home-stat-card flex-fill" style="min-width:160px;">
+            <div class="home-stat-icon" style="background:#fff7ed;">
+              <i class="fa-solid fa-fire-flame-curved" style="color:#f59e0b;"></i>
+            </div>
+            <div>
+              <p class="home-stat-label">Top Zone</p>
+              <p class="home-stat-val" style="font-size:1rem;color:<%= zone_color(@dominant_zone) %>"><%= @dominant_zone %></p>
+            </div>
+          </div>
+        <% end %>
+        <div class="home-stat-card flex-fill" style="min-width:160px;">
+          <div class="home-stat-icon" style="background:#ede9fe;">
+            <i class="fa-solid fa-calendar-days" style="color:#6d28d9;"></i>
+          </div>
+          <div>
+            <p class="home-stat-label">Active Days</p>
+            <p class="home-stat-val"><%= @streak_days %> <span class="home-stat-unit">/ 7 days</span></p>
+          </div>
+        </div>
+        <% if @bpm_trend %>
+          <div class="home-stat-card flex-fill" style="min-width:200px;border-left:3px solid #7b2d5e;">
+            <div class="home-stat-icon" style="background:#fce7f3;">
+              <i class="fa-solid fa-comment-medical" style="color:#7b2d5e;"></i>
+            </div>
+            <div>
+              <p class="home-stat-label">Trend Note</p>
+              <p class="small text-muted mb-0" style="line-height:1.5;">
+                <% if @bpm_trend == :up %>Your avg BPM is higher than last week. Consider more rest.
+                <% elsif @bpm_trend == :down %>Your avg BPM improved this week. Keep it up!
+                <% else %>Your heart rate is stable this week. Great consistency.<% end %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 
-      <!-- BPM guide -->
-      <div class="home-card anim-up delay-4">
+  <!-- Main grid -->
+  <div class="home-grid">
+
+    <!-- Left column -->
+    <div class="d-flex flex-column gap-4">
+
+      <!-- Recent Logs -->
+      <div class="home-card anim-up delay-2">
+        <div class="home-card-header">
+          <h2 class="home-card-title"><i class="fa-solid fa-clock-rotate-left me-2"></i>Recent Logs</h2>
+          <%= link_to heart_rate_logs_path, class: "small fw-semibold text-decoration-none", style: "color:#7b2d5e;" do %>
+            View all <i class="fa-solid fa-arrow-right ms-1"></i>
+          <% end %>
+        </div>
+        <div class="table-responsive mt-3">
+          <table class="table table-hover align-middle border-0">
+            <thead class="text-muted small text-uppercase">
+              <tr>
+                <th class="border-0">Time</th>
+                <th class="border-0">Pulse</th>
+                <th class="border-0">Category</th>
+                <th class="border-0">Zone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @logs.any? %>
+                <% @logs.limit(5).each do |log| %>
+                  <tr class="animate__animated animate__fadeIn">
+                    <td class="text-muted border-0 small"><%= log.recorded_at.in_time_zone('Asia/Manila').strftime("%b %d, %I:%M %p") %></td>
+                    <td class="fw-bold border-0"><%= log.bpm %> <small class="text-muted">bpm</small></td>
+                    <td class="border-0"><span class="home-badge"><%= log.status %></span></td>
+                    <td class="border-0 fw-semibold small" style="color:#7b2d5e;"><%= log.zone %></td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="4" class="text-center py-5 text-muted border-0">
+                    <i class="fa-solid fa-heart-crack fa-2x mb-2 d-block" style="color:#f0e6ed;"></i>
+                    Your history will appear here once you log your first pulse.
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Activity Feed -->
+      <% if @logs.any? %>
+        <div class="home-card anim-up delay-3">
+          <div class="home-card-header mb-3">
+            <h2 class="home-card-title"><i class="fa-solid fa-timeline me-2"></i>Activity Feed</h2>
+            <span class="text-muted small">Your recent activity</span>
+          </div>
+          <div class="d-flex flex-column gap-2">
+            <% @logs.limit(6).each_with_index do |log, i| %>
+              <div class="d-flex align-items-start gap-3 p-2 rounded-3 animate__animated animate__fadeInUp" style="animation-delay:<%= i * 0.08 %>s;border-left:3px solid <%= log.bpm > 120 ? '#e11d48' : log.bpm > 100 ? '#f59e0b' : '#10b981' %>;background:<%= log.bpm > 120 ? '#fff1f2' : log.bpm > 100 ? '#fffbeb' : '#f0fdf4' %>;">
+                <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:<%= log.bpm > 120 ? '#fce7e7' : log.bpm > 100 ? '#fef3c7' : '#dcfce7' %>;">
+                  <i class="fa-solid fa-heart-pulse" style="font-size:0.8rem;color:<%= log.bpm > 120 ? '#e11d48' : log.bpm > 100 ? '#f59e0b' : '#10b981' %>;"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold small text-dark"><%= log.bpm %> bpm — <%= log.zone %></span>
+                    <span class="text-muted" style="font-size:0.7rem;"><%= time_ago_in_words(log.recorded_at) %> ago</span>
+                  </div>
+                  <div class="text-muted" style="font-size:0.75rem;"><%= log.status %> · MHR: <%= log.mhr_percentage %>%</div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+
+    <!-- Right column -->
+    <div class="d-flex flex-column gap-4">
+
+      <!-- Tips -->
+      <div class="home-card anim-up delay-2" style="background:linear-gradient(135deg,#4a1c6e,#7b2d5e);color:white;border:none;">
+        <h2 class="home-card-title mb-3" style="color:white;"><i class="fa-solid fa-lightbulb me-2" style="color:#fde68a;"></i>Heart Health Tips</h2>
+        <% [
+          { icon: "fa-person-running", text: "30 min of moderate exercise daily keeps your heart strong." },
+          { icon: "fa-droplet",        text: "Stay hydrated — dehydration raises your resting heart rate." },
+          { icon: "fa-moon",           text: "7–9 hours of sleep helps regulate your heart rhythm." },
+          { icon: "fa-seedling",       text: "A diet rich in greens and omega-3s supports heart health." },
+          { icon: "fa-wind",           text: "Deep breathing exercises can lower your BPM naturally." }
+        ].sample(3).each_with_index do |tip, i| %>
+          <div class="d-flex align-items-start gap-2 mb-3 animate__animated animate__fadeInRight" style="animation-delay:<%= i * 0.15 %>s;">
+            <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width:30px;height:30px;background:rgba(255,255,255,0.15);">
+              <i class="fa-solid <%= tip[:icon] %>" style="font-size:0.75rem;"></i>
+            </div>
+            <p class="small mb-0" style="opacity:0.9;line-height:1.5;"><%= tip[:text] %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- BPM Guide -->
+      <div class="home-card anim-up delay-3">
         <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-info me-2"></i>BPM Guide</h2>
         <div class="home-bpm-row">
           <span class="home-bpm-dot" style="background:#10b981;"></span>
@@ -156,35 +323,42 @@
         </div>
       </div>
 
-      <!-- Account info -->
-      <div class="home-card mb-3 anim-up delay-3">
-        <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-user me-2"></i>Account</h2>
-
-        <!-- Avatar -->
-        <div class="text-center mb-3">
-          <% if current_user.profile&.avatar&.attached? %>
-            <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width: 64px; height: 64px; object-fit: cover; border: 3px solid #f0e6ed;" %>
-          <% else %>
-            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white mx-auto" style="width: 64px; height: 64px; background: linear-gradient(135deg, #4a1c6e, #7b2d5e); font-size: 1.5rem;">
-              <%= current_user.name[0].upcase %>
-            </div>
-          <% end %>
-        </div>
-
-        <div class="home-account-row">
-          <span class="home-account-label">Email</span>
-          <span class="home-account-val text-truncate" style="max-width: 130px;"><%= current_user.email %></span>
-        </div>
-        <div class="home-account-row">
-          <span class="home-account-label">Registered</span>
-          <span class="home-account-val"><%= current_user.created_at.strftime("%b %Y") %></span>
-        </div>
-        <div class="home-account-row" style="border-bottom: none;">
-          <span class="home-account-label">Status</span>
-          <span class="home-badge-green"><i class="fa-solid fa-circle me-1" style="font-size: 7px;"></i>Active</span>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('bpmChart');
+  if (ctx) {
+    const labels = <%= raw @logs_this_week.sort_by(&:recorded_at).map { |l| l.recorded_at.in_time_zone('Asia/Manila').strftime("%b %d %I:%M%p") }.to_json %>;
+    const data   = <%= raw @logs_this_week.sort_by(&:recorded_at).map(&:bpm).to_json %>;
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'BPM',
+          data: data,
+          borderColor: '#7b2d5e',
+          backgroundColor: 'rgba(123,45,94,0.08)',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#7b2d5e',
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.parsed.y} bpm` } } },
+        scales: {
+          y: { min: 40, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 } } },
+          x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 30 } }
+        }
+      }
+    });
+  }
+</script>

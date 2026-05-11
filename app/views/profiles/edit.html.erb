@@ -9,26 +9,41 @@
   <div class="row">
     <div class="col-md-7">
 
-      <!-- Avatar Card -->
-      <div class="home-card shadow-sm border-0 rounded-4 p-4 mb-4 d-flex align-items-center gap-4">
-        <div style="position: relative; display: inline-block;">
-          <% if @profile.avatar.attached? %>
-            <%= image_tag @profile.avatar, class: "rounded-circle", style: "width: 80px; height: 80px; object-fit: cover; border: 3px solid #f0e6ed;" %>
+      <% flash.each do |type, msg| %>
+        <div class="alert alert-<%= type == 'notice' ? 'success' : 'danger' %> shadow-sm border-0 rounded-3 mb-4 animate__animated animate__fadeInDown">
+          <div class="d-flex align-items-center">
+            <i class="fa-solid <%= type == 'notice' ? 'fa-circle-check' : 'fa-circle-exclamation' %> me-2"></i>
+            <%= msg %>
+          </div>
+        </div>
+      <% end %>
+
+            <!-- Account -->
+      <div class="home-card anim-up delay-4">
+        <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-user me-2"></i>Account</h2>
+        <div class="text-center mb-3">
+          <% if current_user.profile&.avatar&.attached? %>
+            <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width:64px;height:64px;object-fit:cover;border:3px solid #f0e6ed;" %>
           <% else %>
-            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white" style="width: 80px; height: 80px; background: linear-gradient(135deg, #4a1c6e, #7b2d5e); font-size: 1.8rem;">
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white mx-auto" style="width:64px;height:64px;background:linear-gradient(135deg,#4a1c6e,#7b2d5e);font-size:1.5rem;">
               <%= current_user.name[0].upcase %>
             </div>
           <% end %>
+
+          <div>
+            <div class="fw-bold text-dark mb-1"><%= current_user.name %></div>
+            <div class="small text-muted mb-2"><%= current_user.email %></div>
+            <%= form_with model: @profile, url: profile_path, method: :patch, multipart: true do |f| %>
+              <label class="btn btn-sm rounded-3 px-3" style="background: #f0e6ed; color: #7b2d5e; font-weight: 600; font-size: 0.8rem; cursor: pointer;">
+                <i class="fa-solid fa-camera me-1"></i> Change Photo
+                <%= f.file_field :avatar, class: "d-none", accept: "image/*", onchange: "this.form.requestSubmit()" %>
+              </label>
+            <% end %> 
+          </div>
         </div>
-        <div>
-          <div class="fw-bold text-dark mb-1"><%= current_user.name %></div>
-          <div class="small text-muted mb-2"><%= current_user.email %></div>
-          <%= form_with model: @profile, url: profile_path, method: :patch, multipart: true do |f| %>
-            <label class="btn btn-sm rounded-3 px-3" style="background: #f0e6ed; color: #7b2d5e; font-weight: 600; font-size: 0.8rem; cursor: pointer;">
-              <i class="fa-solid fa-camera me-1"></i> Change Photo
-              <%= f.file_field :avatar, class: "d-none", accept: "image/*", onchange: "this.form.requestSubmit()" %>
-            </label>
-          <% end %>
+        <div class="home-account-row">
+          <span class="home-account-label">Registered</span>
+          <span class="home-account-val"><%= current_user.created_at.strftime("%b %Y") %></span>
         </div>
       </div>
 
