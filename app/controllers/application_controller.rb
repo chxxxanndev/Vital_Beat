@@ -7,9 +7,9 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
-  def require_login
-    unless current_user
-      redirect_to login_path, alert: "Please log in first."
+  def require_user
+    if current_user.nil?
+      redirect_to login_path, alert: "Please sign in to access your VitalBeat dashboard."
     end
   end
 end

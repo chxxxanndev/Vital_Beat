@@ -1,0 +1,48 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      
+      <div class="mb-4">
+        <%= link_to root_path, class: "text-decoration-none small fw-bold", style: "color: #7b2d5e;" do %>
+          <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        <% end %>
+      </div>
+
+      <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 animate__animated animate__fadeIn">
+        <div class="text-center mb-5">
+          <div class="d-inline-block p-3 rounded-circle mb-3" style="background: #fdf2f8;">
+            <i class="fa-solid fa-heart-pulse fa-3x" style="color: #7b2d5e;"></i>
+          </div>
+          <h2 class="fw-bold">Record Pulse</h2>
+          <p class="text-muted">Log your current heart rate for analysis.</p>
+        </div>
+
+        <%= form_with model: @log do |f| %>
+          <div class="mb-4">
+            <%= f.label :bpm, "Heart Rate (BPM)", class: "field-label" %>
+            <%= f.number_field :bpm, class: "form-control form-control-lg text-center fw-bold", 
+                placeholder: "72", autofocus: true, style: "font-size: 2rem; color: #7b2d5e;" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :status, "Current Activity", class: "field-label" %>
+            <%= f.select :status, 
+                [['Resting', 'Resting'], ['Light Activity', 'Light'], ['After Exercise', 'Post-workout'], ['Stressed', 'Stress']], 
+                { prompt: 'Select status...' }, 
+                { class: "form-control" } %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :notes, "Note (Optional)", class: "field-label" %>
+            <%= f.text_area :notes, class: "form-control", placeholder: "e.g. Just woke up, feeling calm.", rows: 3 %>
+          </div>
+
+          <div class="d-grid">
+            <%= f.submit "Save Log Entry", class: "btn-primary-custom py-3 shadow" %>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

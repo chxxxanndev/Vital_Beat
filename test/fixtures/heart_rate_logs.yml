@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  bpm: 1
+  mhr_percentage: 1.5
+  status: MyString
+  zone: MyString
+  recorded_at: 2026-05-05 12:45:04
+  notes: MyText
+
+two:
+  user: two
+  bpm: 1
+  mhr_percentage: 1.5
+  status: MyString
+  zone: MyString
+  recorded_at: 2026-05-05 12:45:04
+  notes: MyText

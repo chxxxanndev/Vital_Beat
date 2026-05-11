@@ -1,0 +1,38 @@
+<div class="home-wrap animate__animated animate__fadeIn">
+  <div class="home-topbar">
+    <div>
+      <%= link_to admin_dashboard_path, class: "text-decoration-none small fw-bold text-muted mb-2 d-block" do %>
+        <i class="fa-solid fa-arrow-left me-1"></i> Back to Directory
+      <% end %>
+      <h1 class="home-name">Logs for <%= @target_user.name %></h1>
+      <p class="text-muted small">Viewing patient biometric history</p>
+    </div>
+  </div>
+
+  <div class="home-card shadow-sm border-0 rounded-4 overflow-hidden">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="bg-light">
+        <tr class="small text-muted text-uppercase">
+          <th class="ps-4 py-3">Timestamp</th>
+          <th>BPM</th>
+          <th>Status</th>
+          <th>Calculated Zone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @logs.any? %>
+          <% @logs.each do |log| %>
+            <tr>
+              <td class="ps-4 small text-muted"><%= log.recorded_at.strftime("%b %d, %H:%M") %></td>
+              <td class="fw-bold"><%= log.bpm %> bpm</td>
+              <td><span class="badge rounded-pill bg-light text-dark"><%= log.status %></span></td>
+              <td class="fw-bold" style="color: <%= zone_color(log.zone) %>"><%= log.zone %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr><td colspan="4" class="text-center py-5 text-muted">No logs recorded for this patient.</td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

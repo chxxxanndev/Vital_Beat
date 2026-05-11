@@ -1,0 +1,122 @@
+<div class="home-wrap animate__animated animate__fadeIn">
+  <div class="home-topbar">
+    <div>
+      <p class="home-greeting">System Administration</p>
+      <h1 class="home-name">Admin Dashboard</h1>
+    </div>
+  </div>
+
+  <!-- Admin Stats Row -->
+  <div class="home-stats mb-4">
+    <div class="home-stat-card shadow-sm border-0">
+      <div class="home-stat-icon bg-primary bg-opacity-10 text-primary">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Total Users</p>
+        <p class="home-stat-val text-dark"><%= @total_users %></p>
+      </div>
+    </div>
+
+    <div class="home-stat-card shadow-sm border-0">
+      <div class="home-stat-icon bg-info bg-opacity-10 text-info">
+        <i class="fa-solid fa-database"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Total System Logs</p>
+        <p class="home-stat-val text-dark"><%= @total_logs %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Management Table -->
+  <div class="home-card shadow-sm border-0 rounded-4">
+    <div class="home-card-header px-4 pt-4">
+      <h2 class="home-card-title text-uppercase small fw-bold text-muted">User Directory & Governance</h2>
+    </div>
+    
+    <div class="table-responsive p-2">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr class="small text-muted border-bottom">
+            <th class="ps-4">User Details</th>
+            <th>Role</th>
+            <th>Account Status</th> <!-- New Column -->
+            <th>Health Data</th>
+            <th>Registered</th>
+            <th class="text-end pe-4">System Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr class="<%= 'opacity-50 grayscale' unless user.active? %>">
+              <td class="ps-4">
+                <div class="fw-bold text-dark"><%= user.name %></div>
+                <div class="small text-muted"><%= user.email %></div>
+              </td>
+              <td>
+                <span class="badge rounded-pill <%= user.admin? ? 'bg-primary' : 'bg-light text-dark' %>" style="font-size: 0.7rem;">
+                  <%= user.role.upcase %>
+                </span>
+              </td>
+              <td>
+                <% if user.active? %>
+                  <span class="badge bg-success bg-opacity-10 text-success rounded-pill" style="font-size: 0.65rem; border: 1px solid rgba(25, 135, 84, 0.2);">
+                    <i class="fa-solid fa-circle me-1 small"></i> ACTIVE
+                  </span>
+                <% else %>
+                  <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill" style="font-size: 0.65rem; border: 1px solid rgba(108, 117, 125, 0.2);">
+                    <i class="fa-solid fa-circle me-1 small"></i> DEACTIVATED
+                  </span>
+                <% end %>
+              </td>
+              <td>
+                <div class="small fw-bold text-dark"><%= user.heart_rate_logs.count %> Logs</div>
+                <% if user.heart_rate_logs.any? %>
+                  <div class="text-muted" style="font-size: 0.7rem;">Avg: <%= user.heart_rate_logs.average(:bpm).to_i %> bpm</div>
+                <% end %>
+              </td>
+              <td class="small text-muted">
+                <%= user.created_at.strftime("%b %d, %Y") %>
+              </td>
+              <td class="text-end pe-4">
+  <div class="dropdown">
+    <button class="btn btn-light btn-sm rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+      Manage
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 p-2">
+      <!-- 1. VIEW LOGS (Functional Link) -->
+      <li>
+        <%= link_to admin_user_logs_path(user), class: "dropdown-item small rounded-3" do %>
+          <i class="fa-solid fa-eye me-2 text-primary"></i> View Patient Logs
+        <% end %>
+      </li>
+      
+      <li><hr class="dropdown-divider opacity-50"></li>
+      
+<li>
+  <a href="javascript:void(0)"
+     class="dropdown-item small rounded-3 <%= user.active? ? 'text-danger' : 'text-success' %>"
+     onclick="openConfirmModal(
+       '<%= user_path(user) %>',
+       'PATCH',
+       '<%= user.active? ? 'Deactivate Account' : 'Reactivate Account' %>',
+       'Are you sure you want to <%= user.active? ? 'deactivate' : 'reactivate' %> <%= user.name %>? This will change their system access immediately.',
+       '<%= user.active? ? 'Deactivate Now' : 'Reactivate Now' %>',
+       'user[active]',
+       '<%= user.active? ? 'false' : 'true' %>'
+     )">
+    <i class="fa-solid <%= user.active? ? 'fa-ban' : 'fa-check-circle' %> me-2"></i>
+    <%= user.active? ? "Deactivate Account" : "Reactivate Account" %>
+  </a>
+</li>
+    </ul>
+  </div>
+</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="home-wrap animate__animated animate__fadeIn">
+  <div class="home-topbar">
+    <div>
+      <p class="home-greeting">Medical History</p>
+      <h1 class="home-name">My Logs</h1>
+    </div>
+    <%= link_to "+ New Log", new_heart_rate_log_path, class: "home-btn-primary" %>
+  </div>
+
+  <div class="home-card shadow-sm border-0 rounded-4">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+          <tr class="small text-uppercase text-muted fw-bold">
+            <th class="ps-4 py-3">Date & Time</th>
+            <th>BPM</th>
+            <th>MHR %</th>
+            <th>Status</th>
+            <th>Zone</th>
+            <th class="text-end pe-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @logs.any? %>
+            <% @logs.each do |log| %>
+              <tr>
+                <td class="ps-4 small text-muted">
+                  <%= log.recorded_at.strftime("%b %d, %Y") %><br>
+                  <span class="opacity-75"><%= log.recorded_at.strftime("%I:%M %p") %></span>
+                </td>
+                <td class="fw-bold text-dark fs-5"><%= log.bpm %> <small class="text-muted">bpm</small></td>
+                <td class="text-muted small"><%= log.mhr_percentage %>%</td>
+                <td><span class="badge rounded-pill" style="background: #fdf2f8; color: #7b2d5e;"><%= log.status %></span></td>
+                <td>
+                  <span class="fw-bold" style="color: <%= zone_color(log.zone) %>">
+                    <i class="fa-solid fa-circle me-1 small"></i><%= log.zone %>
+                  </span>
+                </td>
+
+<td class="text-end pe-4">
+  <!-- Use a flexbox div to align them horizontally -->
+  <div class="d-flex justify-content-end align-items-center gap-3">
+    
+    <!-- EDIT LINK -->
+    <%= link_to edit_heart_rate_log_path(log), class: "text-muted text-decoration-none" do %>
+      <i class="fa-solid fa-pen-to-square"></i>
+    <% end %>
+
+    <!-- Updated Delete Button calling the Modal -->
+<a href="javascript:void(0)" 
+   class="text-danger text-decoration-none"
+   onclick="openConfirmModal('<%= heart_rate_log_path(log) %>', 'DELETE', 'Delete Log', 'Permanently remove this reading? This cannot be undone.', 'Yes, Delete')">
+  <i class="fa-solid fa-trash-can"></i>
+</a>
+
+  </div>
+</td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="6" class="text-center py-5 text-muted">
+                <i class="fa-solid fa-folder-open fa-3x mb-3 opacity-25"></i>
+                <p>No heart rate logs found. Your history will appear here.</p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

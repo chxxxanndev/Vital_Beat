@@ -201,3 +201,61 @@ script/ — usually empty. Safe to ignore.
 test/ — for automated tests. Your instructor may not require this, but don't delete it as Rails expects it to exist.
 Dockerfile — only needed for deployment to a server. Not needed for a local demo tomorrow. Safe to ignore.
 .ruby-version — just specifies which Ruby version to use. Keep it, it's tiny and harmless.
+
+
+
+That is a very observant question. Including a separate User_Profiles table is a
+professional best practice in database design, especially for health apps.
+
+Here is why it is there and how to explain it to your instructor:
+
+1. The Principle of Separation (Identity vs. Metadata)
+
+In high-level systems, we try to keep the Users table "lean and clean."
+
+  - The Users table is for Identity: (Email and Password). Its only job is to
+    let the person into the building.
+  - The User_Profiles table is for Metadata: (Full Name, Age, Weight, Gender,
+    Height). Its job is to describe the person.
+
+2. Why is this important for VitalBeat?
+
+To do the "Smart Math" we talked about (like calculating the Maximum Heart
+Rate), the system needs the user's Age.
+
+If you put the age, weight, and bio in the Users table, that table becomes very
+"heavy" and slower to search. By putting that info in a Profiles table, you
+ensure that:
+
+1.  Security is tighter: Sensitive medical metadata (age/weight) is stored
+    separately from the login credentials.
+2.  Performance is better: When Rails is just checking a password, it doesn't
+    have to load all the health data into memory.
+
+3. The Relationship
+
+In the next phase of your project, you would tell Rails:
+
+"A User has_one Profile."
+
+🛡️ How to explain it in your Defense:
+
+If the instructor points to that box and asks, "Why do you have a separate
+Profiles table?"
+
+Your Best Answer:
+
+"I’ve included a separate User_Profiles table to follow the principle of Data
+Normalization. By separating core authentication data (Email/Password) from
+personal health metadata (Age/Weight), we improve both the security and the
+performance of the system. This architecture allows us to scale the 'Health
+Profile' module in the future without cluttering the primary identity table."
+
+💡 Pro-Tip:
+
+Even if you haven't built the User_Profiles table in MySQL yet, keeping it in
+the diagram shows you are thinking like an Architect. It shows you have a plan
+for where to store the user's Age and Weight once you start doing the Heart Rate
+Zone calculations.
+
+It’s a "future-proof" design choice that makes you look very smart! 🚀🔥

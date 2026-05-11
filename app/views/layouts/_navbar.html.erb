@@ -1,0 +1,24 @@
+<nav class="d-flex align-items-center bg-white px-0" style="height: 60px; border-bottom: 2px solid #f0e6ed; flex-shrink: 0;">
+
+  <!-- Left: Logo + Title (same width as sidebar) -->
+  <%= link_to current_user.admin? ? admin_dashboard_path : root_path, class: "d-flex align-items-center gap-2 text-decoration-none px-3", style: "width: 220px; flex-shrink: 0;" do %>
+    <%= image_tag "logo.png", height: 34, alt: "VitalBeat", class: "rounded-2" %>
+    <span class="fw-bold fs-5" style="color: #7b2d5e; letter-spacing: -0.3px;">VitalBeat</span>
+  <% end %>
+
+  <!-- Divider -->
+  <div style="width: 1px; height: 36px; background: #f0e6ed;"></div>
+
+  <!-- Right side -->
+  <div class="d-flex align-items-center justify-content-end flex-grow-1 px-4 gap-3">
+
+    <!-- Current user name -->
+    <span class="small fw-semibold text-dark"><%= current_user.name %></span>
+
+    <!-- Logout -->
+    <%= link_to logout_path, class: "btn btn-sm btn-outline-danger rounded-pill px-3", style: "font-size: 0.8rem;" do %>
+      <i class="fa-solid fa-power-off me-1"></i> Logout
+    <% end %>
+
+  </div>
+</nav>

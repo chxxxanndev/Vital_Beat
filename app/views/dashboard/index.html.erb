@@ -1,0 +1,190 @@
+<div class="home-wrap">
+
+  <!-- Top greeting bar -->
+  <div class="home-topbar">
+    <div class="animate__animated animate__fadeInLeft d-flex align-items-center gap-3">
+      
+      <!-- Avatar -->
+      <% if current_user.profile&.avatar&.attached? %>
+        <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width: 60px; height: 60px; object-fit: cover; border: 3px solid #f0e6ed;" %>
+      <% else %>
+        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4a1c6e, #7b2d5e); font-size: 1.4rem;">
+          <%= current_user.name[0].upcase %>
+        </div>
+      <% end %>
+
+      <div>
+        <p class="home-greeting">Good day,</p>
+        <h1 class="home-name"><%= current_user.name.split(" ").first %>!</h1>
+      </div>
+    </div>
+
+    <div class="animate__animated animate__fadeInRight">
+      <%= link_to new_heart_rate_log_path, class: "home-btn-primary d-flex align-items-center gap-2" do %>
+        <i class="fa-solid fa-plus"></i> New Log
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="home-stats mb-4">
+    <!-- 1. Latest BPM -->
+    <div class="home-stat-card anim-up delay-1">
+      <div class="home-stat-icon">
+        <i class="fa-solid fa-heart-pulse" style="color: #7b2d5e;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Latest BPM</p>
+        <p class="home-stat-val">
+          <%= @latest_log ? @latest_log.bpm : "--" %> <span class="home-stat-unit">bpm</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. Total Logs -->
+    <div class="home-stat-card anim-up delay-2">
+      <div class="home-stat-icon">
+        <i class="fa-solid fa-chart-line" style="color: #be185d;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Total Logs</p>
+        <p class="home-stat-val"><%= @logs.count %></p>
+      </div>
+    </div>
+
+    <!-- 3. Last Activity -->
+    <div class="home-stat-card anim-up delay-3">
+      <div class="home-stat-icon">
+        <i class="fa-solid fa-calendar-check" style="color: #6d28d9;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Last Logged</p>
+        <p class="home-stat-val" style="font-size: 0.95rem;">
+          <%= @latest_log ? "#{time_ago_in_words(@latest_log.recorded_at)} ago" : "No data" %>
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. Smart Health Status -->
+    <div class="home-stat-card anim-up delay-4">
+      <div class="home-stat-icon">
+        <i class="fa-solid fa-shield-heart" style="color: #e11d48;"></i>
+      </div>
+      <div>
+        <p class="home-stat-label">Health Status</p>
+        <p class="home-stat-val" style="font-size: 1rem;">
+          <% if @latest_log %>
+            <% case @latest_log.bpm
+              when 0..59 %>
+                <span style="color: #6d28d9;">Low</span>
+            <% when 60..100 %>
+                <span style="color: #10b981;">Normal</span>
+            <% when 101..120 %>
+                <span style="color: #f59e0b;">Elevated</span>
+            <% else %>
+                <span style="color: #e11d48;">High</span>
+            <% end %>
+          <% else %>
+            Pending
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content grid -->
+  <div class="home-grid">
+
+    <!-- Recent History Table -->
+    <div class="home-card anim-up delay-2">
+      <div class="home-card-header">
+        <h2 class="home-card-title"><i class="fa-solid fa-clock-rotate-left me-2"></i>Recent Logs</h2>
+      </div>
+      
+      <div class="table-responsive mt-3">
+        <table class="table table-hover align-middle border-0">
+          <thead class="text-muted small text-uppercase">
+            <tr>
+              <th class="border-0">Time</th>
+              <th class="border-0">Pulse</th>
+              <th class="border-0">Category</th>
+              <th class="border-0">Auto-Zone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @logs.any? %>
+              <% @logs.limit(5).each do |log| %>
+                <tr>
+                  <td class="text-muted border-0 small"><%= log.recorded_at.strftime("%b %d, %H:%M") %></td>
+                  <td class="fw-bold border-0"><%= log.bpm %> <small class="text-muted">bpm</small></td>
+                  <td class="border-0"><span class="home-badge"><%= log.status %></span></td>
+                  <td class="border-0 fw-semibold text-primary small"><%= log.zone %></td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="4" class="text-center py-5 text-muted border-0">
+                  Your history will appear here once you log your first pulse.
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Side panel -->
+    <div>
+
+      <!-- BPM guide -->
+      <div class="home-card anim-up delay-4">
+        <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-info me-2"></i>BPM Guide</h2>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#10b981;"></span>
+          <span class="home-bpm-label">Normal</span>
+          <span class="home-bpm-range">60–100 bpm</span>
+        </div>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#f59e0b;"></span>
+          <span class="home-bpm-label">Elevated</span>
+          <span class="home-bpm-range">101–120 bpm</span>
+        </div>
+        <div class="home-bpm-row">
+          <span class="home-bpm-dot" style="background:#e11d48;"></span>
+          <span class="home-bpm-label">High</span>
+          <span class="home-bpm-range">121+ bpm</span>
+        </div>
+      </div>
+
+      <!-- Account info -->
+      <div class="home-card mb-3 anim-up delay-3">
+        <h2 class="home-card-title mb-3"><i class="fa-solid fa-circle-user me-2"></i>Account</h2>
+
+        <!-- Avatar -->
+        <div class="text-center mb-3">
+          <% if current_user.profile&.avatar&.attached? %>
+            <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width: 64px; height: 64px; object-fit: cover; border: 3px solid #f0e6ed;" %>
+          <% else %>
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white mx-auto" style="width: 64px; height: 64px; background: linear-gradient(135deg, #4a1c6e, #7b2d5e); font-size: 1.5rem;">
+              <%= current_user.name[0].upcase %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="home-account-row">
+          <span class="home-account-label">Email</span>
+          <span class="home-account-val text-truncate" style="max-width: 130px;"><%= current_user.email %></span>
+        </div>
+        <div class="home-account-row">
+          <span class="home-account-label">Registered</span>
+          <span class="home-account-val"><%= current_user.created_at.strftime("%b %Y") %></span>
+        </div>
+        <div class="home-account-row" style="border-bottom: none;">
+          <span class="home-account-label">Status</span>
+          <span class="home-badge-green"><i class="fa-solid fa-circle me-1" style="font-size: 7px;"></i>Active</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

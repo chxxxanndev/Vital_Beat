@@ -1,9 +1,14 @@
 <div class="split-container">
 
-  <!-- Left: brand -->
+  <!-- Left Side: branding -->
   <div class="brand-side">
     <div class="brand-content anim-left">
       <i class="fa-solid fa-heart-pulse icon-pulse mb-3" style="font-size: 3.2rem; color: #FF2400;"></i>
+
+      <!-- ECG line SVG -->
+      <svg class="ecg-line" viewBox="0 0 280 48" xmlns="http://www.w3.org/2000/svg">
+        <path class="ecg-path" d="M0,24 L40,24 L52,24 L58,6 L66,42 L72,14 L78,24 L130,24 L142,24 L148,6 L156,42 L162,14 L168,24 L280,24" stroke="white" fill="none" stroke-width="2"/>
+      </svg>
 
       <h1 class="fw-bold mb-3" style="font-size: 2.6rem; line-height: 1.2;">Health Starts<br>with a Beat.</h1>
       <p style="opacity: 0.75; font-size: 0.95rem; max-width: 320px; line-height: 1.6; margin-bottom: 32px;">
@@ -27,7 +32,7 @@
     </div>
   </div>
 
-  <!-- Right: form -->
+  <!-- Right Side: form -->
   <div class="form-side">
     <div class="form-container">
 
@@ -47,57 +52,93 @@
         </div>
       <% end %>
 
-      <%= form_with model: @user, url: users_path do |f| %>
+      <%= form_with model: @user, url: users_path, id: "registration_form" do |f| %>
 
-                <!-- NAME FIELD (Now inside the form!) -->
-        <div class="mb-3 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+        <!-- 1. Full Name -->
+        <div class="mb-3 anim-up delay-1">
           <%= f.label :name, "Full Name", class: "field-label" %>
           <%= f.text_field :name, class: "form-control", placeholder: "Juan Dela Cruz" %>
         </div>
 
-        <div class="mb-3 anim-up delay-1">
-          <%= f.label :email, "Email", class: "field-label" %>
-          <%= f.email_field :email,
-                class: "form-control",
-                placeholder: "you@example.com" %>
+        <!-- 2. Account Type -->
+        <div class="mb-3 anim-up delay-2">
+          <%= f.label :role, "Account Type", class: "field-label" %>
+          <%= f.select :role, [['Patient / User', 'patient'], ['System Administrator', 'admin']], {}, class: "form-control" %>
         </div>
 
-        <!-- Password with Toggle -->
-        <div class="mb-3 anim-up delay-2">
+        <!-- 3. Email -->
+        <div class="mb-3 anim-up delay-3">
+          <%= f.label :email, "Email Address", class: "field-label" %>
+          <%= f.email_field :email, class: "form-control", placeholder: "you@example.com" %>
+        </div>
+
+        <!-- 4. Password -->
+        <div class="mb-3 anim-up delay-4">
           <%= f.label :password, "Password", class: "field-label" %>
           <div class="position-relative">
-            <%= f.password_field :password, 
-                  class: "form-control pe-5", 
-                  id: "password_field", 
-                  placeholder: "••••••••" %>
+            <%= f.password_field :password, class: "form-control pe-5", id: "password_field", placeholder: "••••••••" %>
             <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_field', this)"></i>
           </div>
         </div>
 
-        <!-- Confirm Password with Toggle -->
-        <div class="mb-4 anim-up delay-3">
+        <!-- 5. Confirm Password -->
+        <div class="mb-4 anim-up delay-5">
           <%= f.label :password_confirmation, "Confirm Password", class: "field-label" %>
           <div class="position-relative">
-            <%= f.password_field :password_confirmation, 
-                  class: "form-control pe-5", 
-                  id: "password_conf_field", 
-                  placeholder: "••••••••" %>
+            <%= f.password_field :password_confirmation, class: "form-control pe-5", id: "password_conf_field", placeholder: "••••••••" %>
             <i class="fa-solid fa-eye password-toggle-icon" onclick="togglePassword('password_conf_field', this)"></i>
           </div>
         </div>
 
-        <div class="anim-up delay-4">
-          <%= f.submit "Register Now", class: "btn-primary-custom" %>
+        <%= f.fields_for :profile do |p| %>
+          <div class="mb-3 animate__animated animate__fadeInUp" style="animation-delay: 0.15s;">
+            <%= p.label :age, "Your Age", class: "field-label" %>
+            <%= p.number_field :age, class: "form-control", placeholder: "e.g. 25" %>
+          </div>
+        <% end %>
+
+        <!-- 6. Submit Button with Loading Logic -->
+        <div class="anim-up delay-6 d-grid">
+          <button type="submit" id="submit_btn" class="btn-primary-custom d-flex align-items-center justify-content-center gap-2">
+            <span id="btn_text">Register Now</span>
+            <div id="btn_spinner" class="spinner-border spinner-border-sm d-none" role="status"></div>
+          </button>
         </div>
 
       <% end %>
 
-      <div class="text-center mt-4 anim-up delay-5">
+      <div class="text-center mt-4 anim-up delay-7">
         <p class="text-muted" style="font-size: 0.88rem;">
-          Already a member? <%= link_to "Login here", login_path, class: "link-blue" %>
+          Already a member? <%= link_to "Login here", login_path, class: "link-rose fw-bold text-decoration-none" %>
         </p>
       </div>
 
     </div>
   </div>
 </div>
+
+<script>
+  // Animation & Button Logic
+  const regForm = document.getElementById('registration_form');
+  const submitBtn = document.getElementById('submit_btn');
+  const btnText = document.getElementById('btn_text');
+  const btnSpinner = document.getElementById('btn_spinner');
+
+  regForm.addEventListener('submit', function() {
+    submitBtn.disabled = true;
+    btnText.innerText = "Creating account...";
+    btnSpinner.classList.remove('d-none');
+  });
+
+  document.addEventListener("turbo:submit-end", function(event) {
+    if (event.detail.success) {
+      btnText.innerText = "Account Created!";
+      submitBtn.style.backgroundColor = "#10b981"; 
+      btnSpinner.classList.add('d-none');
+    } else {
+      submitBtn.disabled = false;
+      btnText.innerText = "Register Now";
+      btnSpinner.classList.add('d-none');
+    }
+  });
+</script>

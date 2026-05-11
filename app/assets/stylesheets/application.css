@@ -9,6 +9,11 @@
   --color-border-tertiary: #e2e8f0;
   --border-radius-lg: 12px;
   --border-radius-md: 8px;
+  --sidebar-bg: #2e1047;         /* Deepest purple from your gradient */
+  --sidebar-accent: #6b21a8;     /* The plum color of your button */
+  --sidebar-hover: #4c1d95;      /* Medium purple */
+  --sidebar-text: #f1f5f9;       /* Off-white */
+  --sidebar-text-muted: #94a3b8; /* Slate gray */
 }
 
 
@@ -111,4 +116,48 @@
     padding: 80px;
     text-align: left; /* Back to left-aligned */
   }
+}
+
+
+.sidebar {
+  background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
+  color: var(--sidebar-text);
+  border-right: none !important;
+}
+
+.sidebar .nav-link {
+  color: var(--sidebar-text-muted) !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+/* The color for the icon next to the link */
+.sidebar .nav-link i {
+  color: var(--sidebar-text-muted);
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+}
+
+/* The Active Link (Matches your button) */
+.sidebar .nav-link.active {
+  background-color: var(--sidebar-accent) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(107, 33, 168, 0.3);
+}
+
+.sidebar .nav-link.active i {
+  color: white !important;
+}
+
+/* VitalBeat Logo in Sidebar */
+.sidebar-brand {
+  font-weight: 700;
+  color: white !important;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
 }

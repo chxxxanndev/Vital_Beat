@@ -1,0 +1,56 @@
+<div class="home-wrap animate__animated animate__fadeIn">
+  <div class="home-topbar">
+    <div>
+      <p class="home-greeting">Security Hub</p>
+      <h1 class="home-name">Settings</h1>
+    </div>
+  </div>
+
+  <!-- 1. SECURITY CARD (Visible to Everyone) -->
+  <div class="home-card shadow-sm border-0 rounded-4 p-4 mb-4">
+    <h4 class="fw-bold mb-4"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>Credentials</h4>
+    
+    <%= form_with model: current_user, url: settings_path, method: :patch do |f| %>
+      <div class="mb-3">
+        <label class="field-label">Current Password</label>
+        <%= password_field_tag :current_password, nil, class: "form-control", placeholder: "Confirm identity to save changes" %>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="field-label">New Password</label>
+          <%= f.password_field :password, class: "form-control", placeholder: "Min 6 characters" %>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="field-label">Confirm New Password</label>
+          <%= f.password_field :password_confirmation, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <%= f.submit "Update Password", class: "home-btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- 2. DANGER ZONE (HIDDEN FOR ADMINS) -->
+  <% unless current_user.admin? %>
+    <div class="home-card border-danger border-opacity-25 rounded-4 p-4 mt-4 animate__animated animate__fadeInUp" style="background-color: #fff1f2;">
+      <h5 class="fw-bold text-danger mb-2">Danger Zone</h5>
+      <p class="small text-muted mb-4">Manage your account status and data persistence. Deactivating will preserve your logs; deleting will erase them forever.</p>
+
+      <div class="d-flex flex-wrap gap-3">
+        <button type="button" class="btn btn-outline-danger btn-sm rounded-3 px-4"
+                onclick="openConfirmModal('<%= deactivate_settings_path %>', 'PATCH', 'Deactivate Account', 'Are you sure? Your data will be saved safely.', 'Deactivate My Account')">
+          Deactivate Account
+        </button>
+
+        <button type="button" class="btn btn-danger btn-sm rounded-3 px-4"
+                onclick="openConfirmModal('<%= settings_path %>', 'DELETE', 'Permanent Delete', 'Are you 100% sure? This erases EVERYTHING forever.', 'Yes, Delete Everything')">
+          Permanently Delete Data
+        </button>
+      </div>
+    </div>
+  <% end %>
+
+</div>
