@@ -1,22 +1,18 @@
 Rails.application.routes.draw do
   root "dashboard#index"
 
-  # Admin Dashboard Route
-  get "admin/dashboard", to: "admin#index", as: :admin_dashboard
-  get "admin/users", to: "admin#users", as: :admin_users # Dedicated User list
-  # Admin specific user management
-  get "admin/users/:id/logs", to: "admin#user_logs", as: :admin_user_logs
-  # Admin Stats Route
-  get "admin/stats", to: "admin#stats", as: :admin_stats
+  # Admin Routes
+  get "admin/dashboard",      to: "admin#index",      as: :admin_dashboard
+  get "admin/users",          to: "admin#users",      as: :admin_users 
+  get "admin/users/:id/logs", to: "admin#user_logs",  as: :admin_user_logs
+  get "admin/stats",          to: "admin#stats",      as: :admin_stats
 
-
-  get "signup", to: "users#new"
-  post "users", to: "users#create"
-
-  get "login", to: "sessions#new"
-  post "login", to: "sessions#create"
-
-  get "logout", to: "sessions#destroy"
+  # Authentication
+  get "signup",   to: "users#new"
+  post "users",   to: "users#create"
+  get "login",    to: "sessions#new"
+  post "login",   to: "sessions#create"
+  get "logout",   to: "sessions#destroy"
 
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -25,18 +21,16 @@ Rails.application.routes.draw do
   get "password/reset/edit", to: "password_resets#edit"
   patch "password/reset/edit", to: "password_resets#update"
 
-  # THIS IS THE MISSING LINE:
-  resources :heart_rate_logs, path: 'logs'
+  patch 'profile/avatar', to: 'profiles#update_avatar', as: 'update_profile_avatar'
 
-  # 3. HEALTH PROFILE (The new part we discussed)
+  resources :heart_rate_logs, path: 'logs'
   resource :profile, only: [:show, :edit, :update]
 
-  # Account Settings
   resource :settings, only: [:show, :update, :destroy] do
-    get 'security', on: :member # For changing password
-    patch 'deactivate', on: :member # New route for deactivation
+    get 'security', on: :member 
+    patch 'deactivate', on: :member 
   end
 
-  resources :users, only: [:update] # Add this for the admin toggle
+  resources :users, only: [:update] 
 
 end

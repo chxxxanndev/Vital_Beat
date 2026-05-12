@@ -111,12 +111,17 @@ VitalBeat/
 ├── app/
 │   ├── assets/              # Frontend assets (Images & CSS)
 │   │   ├── images
+│   │   │      └── logo.png
 │   │   └── stylesheets/     # Custom CSS for split-screen & dashboard
 │   ├── controllers/         # The logic/brains of the application.
 │   │   ├── concerns
+│   │   ├── admin_controller.rb
+│   │   ├── dashboard_controller.rb
+│   │   ├── heart_rate_logs_controller.rb
+│   │   ├── profiles_controller.rb
+│   │   ├── settings_controller.rb
 │   │   ├── application_controller.rb
 │   │   ├── password_resets_controller.rb
-│   │   ├── home_controller.rb
 │   │   ├── sessions_controller.rb
 │   │   └── users_controller.rb
 │   ├── helpers/         
@@ -130,25 +135,43 @@ VitalBeat/
 │   │   └── application_mailer.rb
 │   ├── models/              # Database blueprints and validations
 │   │   ├── concerns
+│   │   ├── heart_rate_log.rb
+│   │   ├── profile.rb
 │   │   ├── application_record.rb
 │   │   └── user.rb          # Logic for BCrypt secure passwords
 │   └── views/               # The User Interface (HTML.ERB)
-│       ├── home/            # Dashboard view
+│       ├── admin/        
+│       │   ├── index.html.erb
+│       │   ├── stats.html.erb
+│       │   ├── users.html.erb
+│       │   └── user_logs.html.erb
+│       ├── dashboard/            # Dashboard view
 │       │   └── index.html.erb 
+│       ├── heart_rate_logs/      
+│       │   ├── edit.html.erb
+│       │   ├── index.html.erb
+│       │   └── new.html.erb
 │       ├── layouts/         # Global application shell (Head & Navbar)
+│       │   ├── _footer.html.erb
+│       │   ├── _navbar.html.erb
+│       │   ├── _sidebar.html.erb
 │       │   ├── application.html.erb
 │       │   ├── mailer.html.erb
 │       │   └── mailer.text.erb
-│       ├── password_resets
+│       ├── password_resets/
 │       │   ├── edit.html.erb
 │       │   └── new.html.erb
-│       ├── pwa
+│       ├── profiles/
+│       │   └── edit.html.erb
+│       ├── pwa/
 │       │   ├── manifest.json.erb
 │       │   └── service-worker.js
 │       ├── sessions/        # Login interface
 │       │   ├── create.html.erb
 │       │   ├── destroy.html.erb
 │       │   └── new.html.erb
+│       ├── settings/
+│       │   └── show.html.erb
 │       └── users/           # Registration interface
 │           ├── create.html.erb
 │           └── new.html.erb

@@ -8,9 +8,11 @@ class UsersController < ApplicationController
   # This handles the submission of the registration form
   def create
     @user = User.new(user_params)
+    @user.profile ||= @user.build_profile
+    @user.profile.skip_optional_validations = true  # ← skips gender & phone during registration
+
     if @user.save
-      # Artificial delay so the user can see your "Account Created" UI animation
-      sleep 1.2 
+      sleep 1.2
       redirect_to login_path, notice: "Account created! Please sign in with your new credentials."
     else
       render :new, status: :unprocessable_entity

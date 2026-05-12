@@ -2,16 +2,17 @@ class Profile < ApplicationRecord
   belongs_to :user
   has_one_attached :avatar
 
+  attr_accessor :skip_optional_validations
+
   validates :age, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 120 }
-  validates :gender, presence: true
-  
-  # PHONE VALIDATION TRAP:
-  # This regex ensures the number starts with an optional + and contains only 7-15 digits.
-  validates :phone, presence: true, 
-                    format: { 
-                      with: /\A\+?[\d\s\-]{7,15}\z/, 
-                      message: "is invalid. Please use digits (e.g., +639123456789)" 
-                    }
+  validates :gender, presence: true, unless: -> { skip_optional_validations }
+  validates :phone, presence: true,
+                    format: {
+                      with: /\A\+?[\d\s\-]{7,15}\z/,
+                      message: "is invalid. Please use digits (e.g., +639123456789)"
+                    },
+                    unless: -> { skip_optional_validations }
+
   private
 
   def avatar_format
