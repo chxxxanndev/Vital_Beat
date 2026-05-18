@@ -125,7 +125,7 @@ The system successfully:
 
 ---
 
-## 📂 Project Structure (Simplified)
+## VitalBeat Project Structure (Simplified)
 
 ```
 app/

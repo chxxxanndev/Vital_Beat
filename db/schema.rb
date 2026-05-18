@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_11_074846) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_18_164256) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -40,8 +40,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_074846) do
   end
 
   create_table "heart_rate_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.boolean "archived"
     t.integer "bpm"
     t.datetime "created_at", null: false
+    t.string "default"
+    t.string "false"
     t.float "mhr_percentage"
     t.text "notes"
     t.datetime "recorded_at"

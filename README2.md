@@ -102,7 +102,7 @@ What to say: "Ruby is the object-oriented programming language. Rails is the web
 
 
 
-## 📂 Project Structure
+## VitalBeat Project Structure
 
 VitalBeat follows the standard **Model-View-Controller (MVC)** architecture provided by Ruby on Rails 7.
 
@@ -282,3 +282,21 @@ for where to store the user's Age and Weight once you start doing the Heart Rate
 Zone calculations.
 
 It’s a "future-proof" design choice that makes you look very smart! 🚀🔥
+
+
+
+VitalBeat/
+├── app/
+│   ├── assets/         # CSS and images
+│   ├── controllers/    # Business logic layer
+│   ├── models/         # Database models and validations
+│   └── views/          # HTML.ERB templates
+├── config/
+│   ├── routes.rb       # URL-to-controller mapping
+│   └── database.yml    # MySQL connection settings
+├── db/
+│   ├── schema.rb       # Current database snapshot
+│   └── migrate/        # Migration history
+├── Gemfile             # Gem dependencies
+└── Dockerfile          # Production deployment
+ 

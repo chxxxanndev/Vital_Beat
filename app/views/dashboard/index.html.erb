@@ -10,18 +10,20 @@
   <% end %>
 
   <!-- Greeting + New Log Button -->
-  <div class="home-topbar mb-4">
-    <div class="animate__animated animate__fadeInLeft d-flex align-items-center gap-3">
+  <!-- Greeting Banner -->
+  <div class="greeting-banner mb-4">
+    <div class="greeting-banner-bg"></div>
+    <div class="animate__animated animate__fadeInLeft d-flex align-items-center gap-3 greeting-banner-content">
       <% if current_user.profile&.avatar&.attached? %>
-        <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width:64px;height:64px;object-fit:cover;border:3px solid #f0e6ed;box-shadow:0 4px 12px rgba(123,45,94,0.2);" %>
+        <%= image_tag current_user.profile.avatar, class: "rounded-circle", style: "width:64px;height:64px;object-fit:cover;border:3px solid rgba(255,255,255,0.6);box-shadow:0 4px 12px rgba(123,45,94,0.3);" %>
       <% else %>
-        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0" style="width:64px;height:64px;background:linear-gradient(135deg,#4a1c6e,#7b2d5e);font-size:1.4rem;box-shadow:0 4px 12px rgba(123,45,94,0.3);">
+        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0" style="width:64px;height:64px;background:rgba(255,255,255,0.2);font-size:1.4rem;border:3px solid rgba(255,255,255,0.4);box-shadow:0 4px 12px rgba(123,45,94,0.3);">
           <%= current_user.name[0].upcase %>
         </div>
       <% end %>
       <div>
-        <p class="home-greeting">Good day,</p>
-        <h1 class="home-name"><%= current_user.name.split(" ").first %>!</h1>
+        <p class="home-greeting" style="color:rgba(255,255,255,0.75);">Good day,</p>
+        <h1 class="home-name" style="color:white;"><%= current_user.name.split(" ").first %>!</h1>
       </div>
     </div>
   </div>
@@ -29,7 +31,7 @@
   <!-- 4 Stat Cards -->
   <div class="home-stats mb-4">
     <div class="home-stat-card anim-up delay-1">
-      <div class="home-stat-icon" style="background:#f3e8ff;">
+      <div class="home-stat-icon">
         <i class="fa-solid fa-heart-pulse" style="color:#7b2d5e;"></i>
       </div>
       <div>
@@ -38,7 +40,7 @@
       </div>
     </div>
     <div class="home-stat-card anim-up delay-2">
-      <div class="home-stat-icon" style="background:#fce7f3;">
+      <div class="home-stat-icon">
         <i class="fa-solid fa-chart-line" style="color:#be185d;"></i>
       </div>
       <div>
@@ -47,7 +49,7 @@
       </div>
     </div>
     <div class="home-stat-card anim-up delay-3">
-      <div class="home-stat-icon" style="background:#ede9fe;">
+      <div class="home-stat-icon">
         <i class="fa-solid fa-calendar-check" style="color:#6d28d9;"></i>
       </div>
       <div>
@@ -58,7 +60,7 @@
       </div>
     </div>
     <div class="home-stat-card anim-up delay-4">
-      <div class="home-stat-icon" style="background:#fff1f2;">
+      <div class="home-stat-icon">
         <i class="fa-solid fa-shield-heart" style="color:#e11d48;"></i>
       </div>
       <div>
@@ -150,7 +152,7 @@
       <div class="d-flex flex-wrap gap-3">
         <% if @avg_bpm %>
           <div class="home-stat-card flex-fill" style="min-width:160px;">
-            <div class="home-stat-icon" style="background:#f3e8ff;">
+            <div class="home-stat-icon">
               <i class="fa-solid fa-wave-square" style="color:#7b2d5e;"></i>
             </div>
             <div>
@@ -169,7 +171,7 @@
         <% end %>
         <% if @dominant_zone %>
           <div class="home-stat-card flex-fill" style="min-width:160px;">
-            <div class="home-stat-icon" style="background:#fff7ed;">
+            <div class="home-stat-icon">
               <i class="fa-solid fa-fire-flame-curved" style="color:#f59e0b;"></i>
             </div>
             <div>
@@ -179,7 +181,7 @@
           </div>
         <% end %>
         <div class="home-stat-card flex-fill" style="min-width:160px;">
-          <div class="home-stat-icon" style="background:#ede9fe;">
+          <div class="home-stat-icon">
             <i class="fa-solid fa-calendar-days" style="color:#6d28d9;"></i>
           </div>
           <div>
@@ -189,7 +191,7 @@
         </div>
         <% if @bpm_trend %>
           <div class="home-stat-card flex-fill" style="min-width:200px;border-left:3px solid #7b2d5e;">
-            <div class="home-stat-icon" style="background:#fce7f3;">
+            <div class="home-stat-icon">
               <i class="fa-solid fa-comment-medical" style="color:#7b2d5e;"></i>
             </div>
             <div>
@@ -257,14 +259,15 @@
       <% if @logs.any? %>
         <div class="home-card anim-up delay-3">
           <div class="home-card-header mb-3">
+          
             <h2 class="home-card-title"><i class="fa-solid fa-timeline me-2"></i>Activity Feed</h2>
             <span class="text-muted small">Your recent activity</span>
           </div>
           <div class="d-flex flex-column gap-2">
             <% @logs.limit(6).each_with_index do |log, i| %>
-              <div class="d-flex align-items-start gap-3 p-2 rounded-3 animate__animated animate__fadeInUp" style="animation-delay:<%= i * 0.08 %>s;border-left:3px solid <%= log.bpm > 120 ? '#e11d48' : log.bpm > 100 ? '#f59e0b' : '#10b981' %>;background:<%= log.bpm > 120 ? '#fff1f2' : log.bpm > 100 ? '#fffbeb' : '#f0fdf4' %>;">
+              <div class="d-flex align-items-start gap-3 p-2 rounded-3 animate__animated animate__fadeInUp" style="animation-delay:<%= i * 0.08 %>s;<%= log.bpm > 120 ? '#e11d48' : log.bpm > 100 ? '#f59e0b' : '#10b981' %>;background:<%= log.bpm > 120 ? '#fff1f2' : log.bpm > 100 ? '#fffbeb' : '#f0fdf4' %>;">
                 <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:<%= log.bpm > 120 ? '#fce7e7' : log.bpm > 100 ? '#fef3c7' : '#dcfce7' %>;">
-                  <i class="fa-solid fa-heart-pulse" style="font-size:0.8rem;color:<%= log.bpm > 120 ? '#e11d48' : log.bpm > 100 ? '#f59e0b' : '#10b981' %>;"></i>
+                  <i class="fa-solid fa-heart-pulse" style="font-size:0.8re;color:<%= log.bpm > 120 ? '#e11d48' : log.bpm > 100 ? '#f59e0b' : '#10b981' %>;"></i>
                 </div>
                 <div class="flex-grow-1">
                   <div class="d-flex justify-content-between align-items-center">
@@ -287,20 +290,64 @@
       <!-- Tips -->
       <div class="home-card anim-up delay-2" style="background:linear-gradient(135deg,#4a1c6e,#7b2d5e);color:white;border:none;">
         <h2 class="home-card-title mb-3" style="color:white;"><i class="fa-solid fa-lightbulb me-2" style="color:#fde68a;"></i>Heart Health Tips</h2>
-        <% [
-          { icon: "fa-person-running", text: "30 min of moderate exercise daily keeps your heart strong." },
-          { icon: "fa-droplet",        text: "Stay hydrated — dehydration raises your resting heart rate." },
-          { icon: "fa-moon",           text: "7–9 hours of sleep helps regulate your heart rhythm." },
-          { icon: "fa-seedling",       text: "A diet rich in greens and omega-3s supports heart health." },
-          { icon: "fa-wind",           text: "Deep breathing exercises can lower your BPM naturally." }
-        ].sample(3).each_with_index do |tip, i| %>
-          <div class="d-flex align-items-start gap-2 mb-3 animate__animated animate__fadeInRight" style="animation-delay:<%= i * 0.15 %>s;">
-            <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width:30px;height:30px;background:rgba(255,255,255,0.15);">
-              <i class="fa-solid <%= tip[:icon] %>" style="font-size:0.75rem;"></i>
+          <% [
+            { icon: "fa-person-running",     text: "30 min of moderate exercise daily keeps your heart strong." },
+            { icon: "fa-droplet",            text: "Stay hydrated — dehydration raises your resting heart rate." },
+            { icon: "fa-moon",               text: "7–9 hours of sleep helps regulate your heart rhythm." },
+            { icon: "fa-seedling",           text: "A diet rich in greens and omega-3s supports heart health." },
+            { icon: "fa-wind",               text: "Deep breathing exercises can lower your BPM naturally." },
+            { icon: "fa-heart",              text: "A resting heart rate of 60–100 BPM is considered healthy for adults." },
+            { icon: "fa-ban",                text: "Avoid smoking — it raises heart rate and damages blood vessels." },
+            { icon: "fa-wine-glass-empty",   text: "Limit alcohol intake to reduce strain on your cardiovascular system." },
+            { icon: "fa-weight-scale",       text: "Maintaining a healthy weight reduces the workload on your heart." },
+            { icon: "fa-fish",               text: "Eat fatty fish like salmon twice a week for heart-healthy omega-3s." },
+            { icon: "fa-mug-hot",            text: "Limit caffeine — too much can temporarily spike your heart rate." },
+            { icon: "fa-face-smile",         text: "Laughter reduces stress hormones that elevate your BPM." },
+            { icon: "fa-spa",                text: "Meditation for just 10 minutes a day can lower resting heart rate." },
+            { icon: "fa-person-walking",     text: "A 20-minute walk after meals improves circulation and heart health." },
+            { icon: "fa-apple-whole",        text: "Eating more fruits and vegetables lowers the risk of heart disease." },
+            { icon: "fa-salt-shaker",        text: "Reduce sodium intake to help keep blood pressure in check." },
+            { icon: "fa-fire-flame-simple",  text: "Stress management is one of the most powerful tools for heart health." },
+            { icon: "fa-person-swimming",    text: "Swimming is one of the best low-impact cardio exercises available." },
+            { icon: "fa-gauge-high",         text: "High blood pressure is a silent risk — check it regularly." },
+            { icon: "fa-clock",              text: "Consistent sleep and wake times help regulate your heart rhythm." },
+            { icon: "fa-dumbbell",           text: "Strength training twice a week improves overall cardiovascular fitness." },
+            { icon: "fa-leaf",               text: "Green tea contains antioxidants that support heart health." },
+            { icon: "fa-person-biking",      text: "Cycling is excellent cardio — even 15 minutes daily makes a difference." },
+            { icon: "fa-utensils",           text: "Eating smaller, more frequent meals reduces strain on your heart." },
+            { icon: "fa-brain",              text: "Chronic stress raises cortisol, which increases heart rate over time." },
+            { icon: "fa-sun",                text: "Morning sunlight helps regulate your body clock and improves sleep quality." },
+            { icon: "fa-temperature-low",    text: "Cold weather makes your heart work harder — dress warmly in winter." },
+            { icon: "fa-person-yoga",        text: "Yoga has been shown to lower resting heart rate and blood pressure." },
+            { icon: "fa-jar",                text: "Dark chocolate in moderation contains flavonoids that support heart health." },
+            { icon: "fa-circle-check",       text: "Regular health check-ups can catch heart issues before they become serious." },
+            { icon: "fa-no-smoking",         text: "Just 20 minutes after quitting smoking, your heart rate begins to drop." },
+            { icon: "fa-bowl-rice",          text: "Whole grains like oats and brown rice help maintain healthy cholesterol." },
+            { icon: "fa-bottle-water",       text: "Drinking 8 glasses of water daily supports optimal blood circulation." },
+            { icon: "fa-face-tired",         text: "Chronic fatigue can be a sign of an overworked heart — rest when needed." },
+            { icon: "fa-chart-line",         text: "Tracking your BPM daily helps you spot trends before they become problems." },
+            { icon: "fa-users",              text: "Strong social connections are linked to lower rates of heart disease." },
+            { icon: "fa-music",              text: "Listening to calming music can slow your heart rate and reduce anxiety." },
+            { icon: "fa-dog",                text: "Pet ownership, especially dogs, is associated with lower blood pressure." },
+            { icon: "fa-carrot",             text: "Potassium-rich foods like bananas and sweet potatoes support heart rhythm." },
+            { icon: "fa-person-hiking",      text: "Hiking in nature combines cardio exercise with stress-reducing fresh air." },
+            { icon: "fa-hand-holding-heart", text: "Acts of kindness and generosity are linked to better heart health." },
+            { icon: "fa-bolt",               text: "Sudden intense exercise without warm-up can spike your BPM dangerously." },
+            { icon: "fa-pepper-hot",         text: "Capsaicin in chili peppers may help improve circulation over time." },
+            { icon: "fa-virus-slash",        text: "Managing chronic inflammation through diet protects your cardiovascular system." },
+            { icon: "fa-stethoscope",        text: "Know your numbers: BPM, blood pressure, and cholesterol are your heart's report card." },
+            { icon: "fa-bed",                text: "Sleep apnea disrupts heart rhythm — get it treated if you snore heavily." },
+            { icon: "fa-seedling",           text: "A plant-based diet even a few days a week significantly benefits heart health." },
+            { icon: "fa-clock-rotate-left",  text: "Your heart beats about 100,000 times a day — treat it with care." },
+            { icon: "fa-shield-heart",       text: "Prevention is always better than cure — small daily habits protect your heart for life." },
+          ].sample(3).each_with_index do |tip, i| %>
+            <div class="d-flex align-items-start gap-2 mb-3 animate__animated animate__fadeInRight" style="animation-delay:<%= i * 0.15 %>s;">
+              <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width:30px;height:30px;background:rgba(255,255,255,0.15);">
+                <i class="fa-solid <%= tip[:icon] %>" style="font-size:0.75rem;"></i>
+              </div>
+              <p class="small mb-0" style="opacity:0.9;line-height:1.5;"><%= tip[:text] %></p>
             </div>
-            <p class="small mb-0" style="opacity:0.9;line-height:1.5;"><%= tip[:text] %></p>
-          </div>
-        <% end %>
+          <% end %>
       </div>
 
       <!-- BPM Guide -->

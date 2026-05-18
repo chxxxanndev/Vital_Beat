@@ -30,9 +30,10 @@ class PasswordResetsController < ApplicationController
 
   def update
     @user = User.find_by(reset_password_token: params[:token])
-    if @user.update(password_params)
-      @user.update(reset_password_token: nil) 
-      redirect_to login_path, notice: "Password reset successful! Please login."
+    
+    if @user.update(password_params.merge(active: true)) 
+      @user.update(reset_password_token: nil, reset_password_sent_at: nil) 
+      redirect_to login_path, notice: "Password reset successful! Your account has been reactivated. Please login."
     else
       render :edit, status: :unprocessable_entity
     end

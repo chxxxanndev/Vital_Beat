@@ -11,17 +11,26 @@
 
   <!-- Center: Tagline -->
   <div class="d-flex align-items-center justify-content-center flex-grow-1">
-    <span class="navbar-tagline">
-      <i class="fa-solid fa-heart-pulse me-2 navbar-tagline-icon"></i>Track Your Heart Health Daily
-    </span>
+    <% if current_user.admin? %>
+      <div class="navbar-tagline-cycler" id="navbar-tagline">
+        <span class="navbar-tagline active"></i>Admin Control Center</span>
+        <span class="navbar-tagline"></i>Monitor. Manage. Protect.</span>
+        <span class="navbar-tagline"></i>System Governance Active</span>
+        <span class="navbar-tagline"></i>All Users Under Supervision</span>
+      </div>
+    <% else %>
+      <div class="navbar-tagline-cycler" id="navbar-tagline">
+        <span class="navbar-tagline active"></i>Track Your Heart Health Daily</span>
+        <span class="navbar-tagline"></i>Log Your BPM. Know Your Zones.</span>
+        <span class="navbar-tagline"></i>Your Vitals, Safely Stored</span>
+        <span class="navbar-tagline"></i>Stay Consistent. Stay Healthy.</span>
+      </div>
+    <% end %>
   </div>
 
   <!-- Right side -->
   <div class="d-flex align-items-center justify-content-end px-4 gap-3" style="flex-shrink: 0;">
     <span class="small fw-semibold text-dark"><%= current_user.name %></span>
-    <%= link_to logout_path, class: "btn btn-sm btn-outline-danger rounded-pill px-3", style: "font-size: 0.8rem;" do %>
-      <i class="fa-solid fa-power-off me-1"></i> Logout
-    <% end %>
   </div>
 
 </nav>

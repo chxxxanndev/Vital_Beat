@@ -90,39 +90,39 @@
                 <%= user.created_at.strftime("%b %d, %Y") %>
               </td>
               <td class="text-end pe-4">
-  <div class="dropdown">
-    <button class="btn btn-light btn-sm rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown">
-      Manage
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 p-2">
-      <!-- 1. VIEW LOGS (Functional Link) -->
-      <li>
-        <%= link_to admin_user_logs_path(user), class: "dropdown-item small rounded-3" do %>
-          <i class="fa-solid fa-eye me-2 text-primary"></i> View Patient Logs
-        <% end %>
-      </li>
-      
-      <li><hr class="dropdown-divider opacity-50"></li>
-      
-<li>
-  <a href="javascript:void(0)"
-     class="dropdown-item small rounded-3 <%= user.active? ? 'text-danger' : 'text-success' %>"
-     onclick="openConfirmModal(
-       '<%= user_path(user) %>',
-       'PATCH',
-       '<%= user.active? ? 'Deactivate Account' : 'Reactivate Account' %>',
-       'Are you sure you want to <%= user.active? ? 'deactivate' : 'reactivate' %> <%= user.name %>? This will change their system access immediately.',
-       '<%= user.active? ? 'Deactivate Now' : 'Reactivate Now' %>',
-       'user[active]',
-       '<%= user.active? ? 'false' : 'true' %>'
-     )">
-    <i class="fa-solid <%= user.active? ? 'fa-ban' : 'fa-check-circle' %> me-2"></i>
-    <%= user.active? ? "Deactivate Account" : "Reactivate Account" %>
-  </a>
-</li>
-    </ul>
-  </div>
-</td>
+                <div class="dropdown">
+                  <button class="btn btn-light btn-sm rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Manage
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 p-2">
+                    <!-- 1. VIEW LOGS (Functional Link) -->
+                    <li>
+                      <%= link_to admin_user_logs_path(user), class: "dropdown-item small rounded-3" do %>
+                        <i class="fa-solid fa-eye me-2 text-primary"></i> View Patient Logs
+                      <% end %>
+                    </li>
+                
+                    <li><hr class="dropdown-divider opacity-50"></li>
+          
+                    <li>
+                      <a href="javascript:void(0)"
+                        class="dropdown-item small rounded-3 <%= user.active? ? 'text-danger' : 'text-success' %>"
+                        onclick="openConfirmModal(
+                          '<%= user_path(user) %>',
+                          'PATCH',
+                          '<%= user.active? ? 'Deactivate Account' : 'Reactivate Account' %>',
+                          'Are you sure you want to <%= user.active? ? 'deactivate' : 'reactivate' %> <%= user.name %>? This will change their system access immediately.',
+                          '<%= user.active? ? 'Deactivate Now' : 'Reactivate Now' %>',
+                          'user[active]',
+                          '<%= user.active? ? 'false' : 'true' %>'
+                        )">
+                        <i class="fa-solid <%= user.active? ? 'fa-ban' : 'fa-check-circle' %> me-2"></i>
+                        <%= user.active? ? "Deactivate Account" : "Reactivate Account" %>
+                      </a>
+                    </li>
+                    </ul>
+                  </div>
+                </td>
             </tr>
           <% end %>
         </tbody>

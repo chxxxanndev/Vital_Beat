@@ -47,11 +47,15 @@ class HeartRateLogsController < ApplicationController
 
   def destroy
     @log = current_user.heart_rate_logs.find(params[:id])
-    
-    if @log.destroy
-      redirect_to heart_rate_logs_path, notice: "Log entry removed."
-    else
-      redirect_to heart_rate_logs_path, alert: "Error: Could not delete entry."
+    if @log.update(archived: true)
+      redirect_to heart_rate_logs_path, notice: "Log entry moved to archive."
+    end
+  end
+
+  def restore
+    @log = current_user.heart_rate_logs.find(params[:id])
+    if @log.update(archived: false)
+      redirect_to heart_rate_logs_path, notice: "Log entry successfully restored."
     end
   end
 

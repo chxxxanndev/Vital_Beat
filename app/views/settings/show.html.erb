@@ -6,18 +6,9 @@
     </div>
   </div>
 
-  <!-- 1. SECURITY CARD (Visible to Everyone) -->
+  <!-- 1. Credentials Card -->
   <div class="home-card shadow-sm border-0 rounded-4 p-4 mb-4">
-    <h4 class="fw-bold mb-4"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>Credentials</h4>
-    
-    <% flash.each do |type, msg| %>
-      <div class="alert alert-<%= type == 'notice' ? 'success' : 'danger' %> shadow-sm border-0 rounded-3 mb-4">
-        <div class="d-flex align-items-center">
-          <i class="fa-solid <%= type == 'notice' ? 'fa-circle-check' : 'fa-circle-exclamation' %> me-2"></i>
-          <%= msg %>
-        </div>
-      </div>
-    <% end %>
+    <h4 class="fw-bold mb-4"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>Security Credentials</h4>
     
     <%= form_with model: current_user, url: settings_path, method: :patch do |f| %>
       <div class="mb-3">
@@ -42,24 +33,20 @@
     <% end %>
   </div>
 
-  <!-- 2. DANGER ZONE (HIDDEN FOR ADMINS) -->
   <% unless current_user.admin? %>
-    <div class="home-card border-danger border-opacity-25 rounded-4 p-4 mt-4 animate__animated animate__fadeInUp" style="background-color: #fff1f2;">
-      <h5 class="fw-bold text-danger mb-2">Danger Zone</h5>
-      <p class="small text-muted mb-4">Manage your account status and data persistence. Deactivating will preserve your logs; deleting will erase them forever.</p>
+    <div class="home-card border-warning border-opacity-25 rounded-4 p-4 mt-4 animate__animated animate__fadeInUp" style="background-color: #fffbeb;">
+      <h5 class="fw-bold text-warning mb-2" style="color: #854f0b !important;">Account Management</h5>
+      <p class="small text-muted mb-4">
+        <strong>Archive Your Account:</strong> By deactivating, your secure access to VitalBeat will be revoked, but your medical history and heart rate logs will be preserved in our database for future clinical review. You can reactivate your account at any time via a secure password reset.
+      </p>
 
       <div class="d-flex flex-wrap gap-3">
-        <button type="button" class="btn btn-outline-danger btn-sm rounded-3 px-4"
-                onclick="openConfirmModal('<%= deactivate_settings_path %>', 'PATCH', 'Deactivate Account', 'Are you sure? Your data will be saved safely.', 'Deactivate My Account')">
-          Deactivate Account
-        </button>
-
-        <button type="button" class="btn btn-danger btn-sm rounded-3 px-4"
-                onclick="openConfirmModal('<%= settings_path %>', 'DELETE', 'Permanent Delete', 'Are you 100% sure? This erases EVERYTHING forever.', 'Yes, Delete Everything')">
-          Permanently Delete Data
+        <!-- ONLY THE DEACTIVATE BUTTON REMAINS -->
+        <button type="button" class="btn btn-warning btn-sm rounded-3 px-4 fw-bold text-white" style="background-color: #f59e0b; border: none;"
+                onclick="openConfirmModal('<%= deactivate_settings_path %>', 'PATCH', 'Archive Account', 'Confirm deactivation? Your data will be kept for historical persistence.', 'Deactivate My Account')">
+          Archive & Deactivate
         </button>
       </div>
     </div>
   <% end %>
-
 </div>

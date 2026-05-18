@@ -17,8 +17,9 @@
     <%= link_to "+ New Log", new_heart_rate_log_path, class: "home-btn-primary" %>
   </div>
 
-  <!-- Search Bar -->
-  <div class="mb-3">
+  <!-- Search & Toggle Bar -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <!-- Search -->
     <div class="input-group" style="max-width: 420px;">
       <span class="input-group-text bg-white border-end-0" style="border-radius: 12px 0 0 12px; border-color: #e2d6ec;">
         <i class="fa-solid fa-magnifying-glass text-muted small"></i>
@@ -32,12 +33,21 @@
         oninput="filterLogs()"
       >
     </div>
-    <p class="text-muted small mt-1 ms-1" id="searchHint" style="display:none;">
-      No logs match your search.
-    </p>
+
+    <!-- The Archive Toggle Switch -->
+    <div class="form-check form-switch d-flex align-items-center gap-2">
+      <input class="form-check-input" type="checkbox" role="switch" id="toggleArchived" onchange="filterLogs()" style="cursor: pointer; width: 2.5em; height: 1.25em;">
+      <label class="form-check-label small fw-bold text-muted" for="toggleArchived" style="cursor: pointer;">
+        <i class="fa-solid fa-box-archive me-1"></i> Show Archived
+      </label>
+    </div>
   </div>
 
-  <div class="home-card shadow-sm border-0 rounded-4">
+  <p class="text-muted small mt-1 ms-1" id="searchHint" style="display:none;">
+    No logs match your current filters.
+  </p>
+
+  <div class="home-card shadow-sm border-0 rounded-4 overflow-hidden">
     <div class="table-responsive">
       <table class="table table-hover align-middle mb-0" id="logsTable">
         <thead class="bg-light">
@@ -54,27 +64,29 @@
         <tbody id="logsTableBody">
           <% if @logs.any? %>
             <% @logs.each do |log| %>
-              <tr
+              <tr 
+                class="<%= 'opacity-50 grayscale bg-light' if log.archived? %>"
                 data-date="<%= log.recorded_at.in_time_zone('Asia/Manila').strftime('%b %d, %Y %I:%M %p').downcase %>"
                 data-bpm="<%= log.bpm %>"
+                data-archived="<%= log.archived? %>"
+                style="<%= 'display: none;' if log.archived? %>" <%# Hidden by default if archived %>
               >
                 <td class="ps-4 small text-muted">
                   <%= log.recorded_at.in_time_zone('Asia/Manila').strftime("%b %d, %Y") %><br>
-                  <span class="opacity-75"><%= log.recorded_at.in_time_zone('Asia/Manila').strftime("%I:%M %p") %></span>
+                  <span class="opacity-75 text-uppercase"><%= log.recorded_at.in_time_zone('Asia/Manila').strftime("%I:%M %p") %></span>
                 </td>
                 <td class="fw-bold text-dark fs-5"><%= log.bpm %> <small class="text-muted">bpm</small></td>
                 <td class="text-muted small"><%= log.mhr_percentage %>%</td>
                 <td><span class="badge rounded-pill" style="background: #fdf2f8; color: #7b2d5e;"><%= log.status %></span></td>
                 <td>
                   <span class="fw-bold" style="color: <%= zone_color(log.zone) %>">
-                    <i class="fa-solid fa-circle me-1 small"></i><%= log.zone %>
+                    <i class="fa-solid fa-circle me-1 small" style="font-size: 8px;"></i><%= log.zone %>
                   </span>
                 </td>
 
                 <td class="text-muted small" style="max-width:180px;">
                   <% if log.notes.present? %>
-                    <span title="<%= log.notes %>"
-                      style="display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                    <span title="<%= log.notes %>" style="display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
                       <%= log.notes %>
                     </span>
                   <% else %>
@@ -85,17 +97,27 @@
                 <td class="text-end pe-4">
                   <div class="d-flex justify-content-end align-items-center gap-3">
 
-                    <!-- EDIT LINK -->
-                    <%= link_to edit_heart_rate_log_path(log), class: "text-muted text-decoration-none" do %>
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    <% end %>
+                    <% if log.archived? %>
+                      <!-- RESTORE LINK (Undo) -->
+                      <%= button_to restore_heart_rate_log_path(log), method: :patch, 
+                          class: "btn btn-link text-success p-0 text-decoration-none", 
+                          title: "Restore to History" do %>
+                        <i class="fa-solid fa-rotate-left"></i>
+                      <% end %>
+                    <% else %>
+                      <!-- EDIT LINK -->
+                      <%= link_to edit_heart_rate_log_path(log), class: "text-muted text-decoration-none", title: "Edit Entry" do %>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      <% end %>
 
-                    <!-- DELETE BUTTON -->
-                    <a href="javascript:void(0)"
-                       class="text-danger text-decoration-none"
-                       onclick="openConfirmModal('<%= heart_rate_log_path(log) %>', 'DELETE', 'Delete Log', 'Permanently remove this reading? This cannot be undone.', 'Yes, Delete')">
-                      <i class="fa-solid fa-trash-can"></i>
-                    </a>
+                      <!-- ARCHIVE BUTTON -->
+                      <a href="javascript:void(0)"
+                         class="text-danger text-decoration-none"
+                         title="Archive Entry"
+                         onclick="openConfirmModal('<%= heart_rate_log_path(log) %>', 'DELETE', 'Archive Log', 'Move this reading to your archive? It will be hidden from your main dashboard.', 'Archive Now')">
+                        <i class="fa-solid fa-box-archive"></i>
+                      </a>
+                    <% end %>
 
                   </div>
                 </td>
@@ -103,9 +125,9 @@
             <% end %>
           <% else %>
             <tr id="emptyState">
-              <td colspan="7" class="text-center py-5 text-muted">
+              <td colspan="7" class="text-center py-5 text-muted border-0">
                 <i class="fa-solid fa-folder-open fa-3x mb-3 opacity-25"></i>
-                <p>No heart rate logs found. Your history will appear here.</p>
+                <p>No health logs found. Your history will appear here.</p>
               </td>
             </tr>
           <% end %>
@@ -113,27 +135,36 @@
       </table>
     </div>
   </div>
-
 </div>
 
 <script>
   function filterLogs() {
     const query = document.getElementById('logSearch').value.trim().toLowerCase();
-    const rows  = document.querySelectorAll('#logsTableBody tr[data-date]');
-    const hint  = document.getElementById('searchHint');
+    const showArchived = document.getElementById('toggleArchived').checked;
+    const rows = document.querySelectorAll('#logsTableBody tr[data-date]');
+    const hint = document.getElementById('searchHint');
     let visibleCount = 0;
 
     rows.forEach(row => {
       const date = row.getAttribute('data-date') || '';
-      const bpm  = row.getAttribute('data-bpm')  || '';
+      const bpm = row.getAttribute('data-bpm') || '';
+      const isArchived = row.getAttribute('data-archived') === 'true';
 
-      // Match against date string OR bpm value
-      const matches = date.includes(query) || bpm.includes(query);
-      row.style.display = matches ? '' : 'none';
-      if (matches) visibleCount++;
+      // 1. Check if it matches search text
+      const matchesSearch = date.includes(query) || bpm.includes(query);
+      
+      // 2. Logic: Show if it matches search AND (it's not archived OR the toggle is ON)
+      let displayRow = false;
+      if (matchesSearch) {
+        if (!isArchived || showArchived) {
+          displayRow = true;
+        }
+      }
+
+      row.style.display = displayRow ? '' : 'none';
+      if (displayRow) visibleCount++;
     });
 
-    // Show "no results" hint only when there are rows but none match
     hint.style.display = (rows.length > 0 && visibleCount === 0) ? 'block' : 'none';
   }
 </script>

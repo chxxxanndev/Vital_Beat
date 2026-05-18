@@ -16,7 +16,7 @@ class ProfilesController < ApplicationController
       if @profile.update(profile_params)
         redirect_to root_path, notice: "Health profile updated successfully."
       else
-        @profile = current_user.profile.reload  # ← reload from DB to get a clean record
+        @profile = current_user.profile.reload  
         flash.now[:alert] = "Update failed. Please input valid data."
         render :edit, status: :unprocessable_entity
       end

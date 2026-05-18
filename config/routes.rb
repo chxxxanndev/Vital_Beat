@@ -26,11 +26,15 @@ Rails.application.routes.draw do
   resources :heart_rate_logs, path: 'logs'
   resource :profile, only: [:show, :edit, :update]
 
-  resource :settings, only: [:show, :update, :destroy] do
+  resource :settings, only: [:show, :update] do
     get 'security', on: :member 
     patch 'deactivate', on: :member 
   end
 
   resources :users, only: [:update] 
+
+  resources :heart_rate_logs, path: 'logs' do
+    patch :restore, on: :member # Add this line
+  end
 
 end

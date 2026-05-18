@@ -377,6 +377,33 @@
         font-size: 0.8rem;
       }
 
+      .greeting-banner {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        padding: 28px 28px;
+      }
+
+      .greeting-banner-bg {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(270deg, #2d1b4e, #4a1c6e, #7b2d5e, #9d3570, #7b2d5e, #4a1c6e, #2d1b4e);
+        background-size: 400% 400%;
+        animation: bannerShift 8s ease infinite;
+        z-index: 0;
+      }
+
+      .greeting-banner-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes bannerShift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
       .sidebar .nav-link {
         color: #4a1c6e;
         transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease;
@@ -390,6 +417,17 @@
       .sidebar .nav-link.active {
         background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
         color: white;
+      }
+
+      .sidebar .nav-link.text-danger:hover {
+        background: transparent;
+        color: #e11d48 !important;
+        transform: none;
+      }
+
+      .fw-bold.text-dark.fs-5 {
+        font-family: 'DM Mono', monospace; /* Or just 'Courier New' */
+        letter-spacing: -0.02em;
       }
 
       .form-control.pe-5 { padding-right: 40px !important; }
@@ -468,39 +506,51 @@
         50%       { transform: scale(1.12); opacity: 1;   }
       }
 
-      .navbar-tagline {
-        font-family: 'Playfair Display', serif;
-        font-size: 1rem;
-        font-weight: 600;
-        font-style: italic;
-        color: #7b2d5e;
-        letter-spacing: 0.02em;
-        opacity: 0;
-        animation: navTaglineFade 0.8s ease forwards 0.3s;
-        white-space: nowrap;
-        background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
+      .navbar-tagline-cycler {
+  position: relative;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      .navbar-tagline-icon {
-        animation: navHeartbeat 1.4s ease-in-out infinite;
-        display: inline-block;
-      }
+.navbar-tagline {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: none;
+  background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  pointer-events: none;
+}
 
-      @keyframes navTaglineFade {
-        from { opacity: 0; transform: translateY(-6px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
+.navbar-tagline.active {
+  animation: taglineBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
 
-      @keyframes navHeartbeat {
-        0%, 100% { transform: scale(1); }
-        14%       { transform: scale(1.25); }
-        28%       { transform: scale(1); }
-        42%       { transform: scale(1.15); }
-        56%       { transform: scale(1); }
-      }
+.navbar-tagline.exit {
+  animation: taglineBounceOut 0.4s ease-in forwards;
+}
+
+@keyframes taglineBounceIn {
+  0%   { opacity: 0; transform: translateY(24px) scale(0.9); }
+  60%  { opacity: 1; transform: translateY(-6px) scale(1.04); }
+  80%  { transform: translateY(3px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes taglineBounceOut {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+}
 
       .feature-item {
         display: flex;
@@ -664,6 +714,21 @@
         new bootstrap.Alert(alert).close();
       });
     }, 5000);
+
+    // Navbar tagline cycler
+    const taglines = document.querySelectorAll('.navbar-tagline');
+    if (taglines.length > 0) {
+      let current = 0;
+      setInterval(() => {
+        taglines[current].classList.remove('active');
+        taglines[current].classList.add('exit');
+        setTimeout(() => {
+          taglines[current].classList.remove('exit');
+          current = (current + 1) % taglines.length;
+          taglines[current].classList.add('active');
+        }, 400);
+      }, 3000);
+    }
   </script>
 
 </body>
