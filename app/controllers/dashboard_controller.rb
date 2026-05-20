@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
   before_action :require_user 
 
   def index
-    @logs = current_user.heart_rate_logs.order(recorded_at: :desc)
+    @logs = current_user.heart_rate_logs.where(archived: false).order(recorded_at: :desc)
     @latest_log = @logs.first
     @logs_this_week = @logs.select { |l| l.recorded_at >= 7.days.ago }
     @logs_last_week = @logs.select { |l| l.recorded_at.between?(14.days.ago, 7.days.ago) }

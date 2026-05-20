@@ -1,54 +1,182 @@
-<div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white" style="width: 220px; border-right: 1px solid #f0e6ed; overflow-y: auto;">
+<%# Floating Toggle Button %>
+<button id="sidebarToggle" 
+  style="position:fixed;top:50%;left:220px;transform:translateY(-50%);z-index:1050;width:22px;height:40px;border-radius:0 8px 8px 0;border:1px solid rgba(123,45,94,0.2);border-left:none;background:rgba(255,255,255,0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#7b2d5e;padding:0;transition:left 0.3s ease,background 0.2s;"
+  onclick="toggleSidebar()" title="Toggle sidebar">
+  <i class="fa-solid fa-chevron-right" id="toggleIcon" style="font-size:0.6rem;transform:rotate(180deg);"></i>
+</button>
 
-  <ul class="nav nav-pills flex-column mb-auto gap-1 mt-2">
+<%# Sidebar %>
+<div id="mainSidebar"
+  class="sidebar d-flex flex-column flex-shrink-0 bg-white expanded"
+  style="width:68px; height:100%; border-right:1px solid #f0e6ed; overflow:hidden;
+         transition:width 0.3s ease,padding 0.3s ease; padding:1rem 0; z-index:1040;">
+
+  <%# Nav links %>
+  <ul class="nav nav-pills flex-column mb-auto gap-1 mt-2" style="padding: 0 8px;">
 
     <% if current_user.admin? %>
       <li class="nav-item">
-        <a href="/admin/dashboard" class="nav-link <%= 'active' if controller_name == 'admin' && action_name == 'index' %>">
-          <i class="fa-solid fa-user-shield me-2"></i> Admin Panel
+        <a href="/admin/dashboard"
+          class="nav-link <%= 'active' if controller_name == 'admin' && action_name == 'index' %>"
+          title="Admin Panel">
+          <i class="fa-solid fa-user-shield"></i>
+          <span class="sidebar-label">Admin Panel</span>
         </a>
       </li>
       <li>
-        <%= link_to admin_users_path, class: "nav-link #{'active' if action_name == 'users'}" do %>
-          <i class="fa-solid fa-users me-2"></i> Manage Users
+        <%= link_to admin_users_path,
+          class: "nav-link #{'active' if action_name == 'users'}",
+          title: "Manage Users" do %>
+          <i class="fa-solid fa-users"></i>
+          <span class="sidebar-label">Manage Users</span>
         <% end %>
       </li>
       <li>
-        <%= link_to admin_stats_path, class: "nav-link #{'active' if action_name == 'stats'}" do %>
-          <i class="fa-solid fa-chart-line me-2"></i> Population Stats
+        <%= link_to admin_stats_path,
+          class: "nav-link #{'active' if action_name == 'stats'}",
+          title: "Population Stats" do %>
+          <i class="fa-solid fa-chart-line"></i>
+          <span class="sidebar-label">Population Stats</span>
         <% end %>
       </li>
     <% else %>
       <li class="nav-item">
-        <a href="/" class="nav-link <%= 'active' if controller_name == 'dashboard' %>">
-          <i class="fa-solid fa-house me-2"></i> Dashboard
+        <a href="/"
+          class="nav-link <%= 'active' if controller_name == 'dashboard' %>"
+          title="Dashboard">
+          <i class="fa-solid fa-house"></i>
+          <span class="sidebar-label">Dashboard</span>
         </a>
       </li>
       <li>
-        <%= link_to heart_rate_logs_path, class: "nav-link #{'active' if controller_name == 'heart_rate_logs'}" do %>
-          <i class="fa-solid fa-notes-medical me-2"></i> My Logs
+        <%= link_to heart_rate_logs_path,
+          class: "nav-link #{'active' if controller_name == 'heart_rate_logs'}",
+          title: "My Logs" do %>
+          <i class="fa-solid fa-notes-medical"></i>
+          <span class="sidebar-label">My Logs</span>
         <% end %>
       </li>
       <li>
-        <%= link_to edit_profile_path, class: "nav-link #{'active' if controller_name == 'profiles'}" do %>
-          <i class="fa-solid fa-user-doctor me-2"></i> Health Profile
+        <%= link_to edit_profile_path,
+          class: "nav-link #{'active' if controller_name == 'profiles'}",
+          title: "Health Profile" do %>
+          <i class="fa-solid fa-user-doctor"></i>
+          <span class="sidebar-label">Health Profile</span>
         <% end %>
       </li>
     <% end %>
 
-    <hr class="my-3">
+    <li><hr class="my-3" style="border-color:#f0e6ed;"></li>
 
     <li>
-      <%= link_to settings_path, class: "nav-link #{'active' if controller_name == 'settings'}" do %>
-        <i class="fa-solid fa-gear me-2"></i> Settings
+      <%= link_to settings_path,
+        class: "nav-link #{'active' if controller_name == 'settings'}",
+        title: "Settings" do %>
+        <i class="fa-solid fa-gear"></i>
+        <span class="sidebar-label">Settings</span>
       <% end %>
     </li>
   </ul>
 
-  <div class="mt-auto pt-3 text-center" style="border-top: 1px solid #f0e6ed;">
-    <%= link_to logout_path, class: "nav-link text-danger fw-semibold justify-content-center" do %>
-      <i class="fa-solid fa-power-off me-2"></i> Logout
+  <%# Logout %>
+  <div class="mt-auto pt-3" style="border-top:1px solid #f0e6ed; padding: 8px 8px 12px;">
+    <%= link_to logout_path,
+      class: "nav-link text-danger fw-semibold justify-content-center",
+      title: "Logout" do %>
+      <i class="fa-solid fa-power-off"></i>
+      <span class="sidebar-label">Logout</span>
     <% end %>
   </div>
 
 </div>
+
+<style>
+  /* Labels hidden by default — icons always show */
+  .sidebar-label {
+    display: none;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* Your original nav-link style preserved */
+  .sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    color: #4a1c6e;
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .sidebar .nav-link i {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* Your original hover effect */
+  .sidebar .nav-link:hover {
+    background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(123, 45, 94, 0.35);
+  }
+
+  .sidebar .nav-link.active {
+    background: linear-gradient(135deg, #4a1c6e, #7b2d5e);
+    color: white;
+  }
+
+  /* Logout hover override — your original */
+  .sidebar .nav-link.text-danger:hover {
+    background: transparent;
+    color: #e11d48 !important;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Expanded state */
+  #mainSidebar.expanded {
+    width: 220px !important;
+  }
+
+  #mainSidebar.expanded .sidebar-label {
+    display: inline !important;
+  }
+
+  #mainSidebar.expanded .sidebar .nav-link,
+  #mainSidebar.expanded .nav-link {
+    justify-content: flex-start !important;
+  }
+</style>
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    const toggle  = document.getElementById('sidebarToggle');
+    const icon    = document.getElementById('toggleIcon');
+    const expanded = sidebar.classList.toggle('expanded');
+    toggle.style.left = expanded ? '220px' : '68px';
+    icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+
+  // Bootstrap tooltips on collapsed icons
+  document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      const sidebar = document.getElementById('mainSidebar');
+      if (!sidebar.classList.contains('expanded')) {
+        link.setAttribute('data-bs-toggle', 'tooltip');
+        link.setAttribute('data-bs-placement', 'right');
+        bootstrap.Tooltip.getOrCreateInstance(link).show();
+      }
+    });
+    link.addEventListener('mouseleave', () => {
+      const tooltip = bootstrap.Tooltip.getInstance(link);
+      if (tooltip) tooltip.hide();
+    });
+  });
+</script>
